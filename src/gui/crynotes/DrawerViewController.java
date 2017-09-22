@@ -33,11 +33,6 @@ public class DrawerViewController implements Initializable {
     @FXML
     private JFXButton home;
     
-    @FXML
-    private JFXButton notebooks;
-        
-    @FXML
-    private JFXButton notes;
             
     @FXML
     private JFXButton settings;
@@ -61,18 +56,6 @@ public class DrawerViewController implements Initializable {
         image = new Image(imageFile.toURI().toString());
         imageView = new ImageView(image);
         home.setGraphic(imageView);
-        
-        //setup notebooksButton
-        imageFile= new File("/home/mwlltr/workspace/Programming/notesNG/src/gui/images/icons8-Buch-30.png");
-        image = new Image(imageFile.toURI().toString());
-        imageView = new ImageView(image);
-        notebooks.setGraphic(imageView);
-        
-        //setup notesButton
-        imageFile= new File("/home/mwlltr/workspace/Programming/notesNG/src/gui/images/icons8-Notiz-30.png");
-        image = new Image(imageFile.toURI().toString());
-        imageView = new ImageView(image);
-        notes.setGraphic(imageView);
         
         //setup homeButton
         imageFile= new File("/home/mwlltr/workspace/Programming/notesNG/src/gui/images/icons8-Einstellungen-30.png");
