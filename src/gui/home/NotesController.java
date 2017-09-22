@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui.notes;
+package gui.home;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
@@ -31,12 +31,12 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import crynotes.database.Controller;
+import crynotes.database.Database;
 import crynotes.note.Note;
 import crynotes.notebook.Notebook;
 
 /**
- * FXML Controller class
+ * FXML Database class
  *
  * @author mwlltr
  */
@@ -78,7 +78,7 @@ public class NotesController implements Initializable {
     
     //private final 
     
-    Controller dataController;
+    Database database;
     String nodeName;
     /**
      * Initializes the controller class.
@@ -101,19 +101,19 @@ public class NotesController implements Initializable {
         root.setValue("Notebooks");
         root.setGraphic(rootIcon);
         this.nodeName="";
-        this.dataController = new Controller();
-        txtDate.setText(this.dataController.getCurrentDateTimeGui());
+        this.database = new Database();
+        txtDate.setText(this.database.getCurrentDateTimeGui());
         notebooksTreeView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<TreeItem>(){
              @Override
              public void onChanged(ListChangeListener.Change<? extends TreeItem> c) {
                  nodeName = notebooksTreeView.getSelectionModel().getSelectedItem().getValue();
-                 Note note = dataController.getNote(nodeName);
+                 Note note = database.getNote(nodeName);
                  if (note.getName().isEmpty()){
                      txtNotename.setText("");
                      txtContent.setText("");
                      
                      
-                     txtDate.setText(dataController.getCurrentDateTimeGui());
+                     txtDate.setText(database.getCurrentDateTimeGui());
                  }else{
                  txtNotename.setText(note.getName());
                  txtContent.setText(note.getContent());
@@ -137,7 +137,7 @@ public class NotesController implements Initializable {
         });
         
 
-        ArrayList<Notebook> notebooks = this.dataController.getNotebooks();
+        ArrayList<Notebook> notebooks = this.database.getNotebooks();
         for(Notebook notebook: notebooks){
             TreeItem<String> notebookTreeItem = new TreeItem<String>();
             notebookTreeItem.setValue(notebook.getName());
@@ -174,7 +174,7 @@ public class NotesController implements Initializable {
         
         String workbookName = txtAdd.getText();
         System.out.println(workbookName);
-        this.dataController.addNotebook(workbookName, "root");
+        this.database.addNotebook(workbookName, "root");
         TreeItem<String> notebook = new TreeItem<String>();
         Node notebookIcon =  new ImageView(new Image(getClass().getResourceAsStream("../images/icons8-Book Filled-16-orange.png")));
         notebook.setValue(workbookName);
@@ -200,7 +200,7 @@ public class NotesController implements Initializable {
                 ti.getChildren().add(note);
             }
         }
-        this.dataController.addNote(noteName, content, notebookName);
+        this.database.addNote(noteName, content, notebookName);
         unsetControls();
         
        
@@ -213,8 +213,8 @@ public class NotesController implements Initializable {
     
     @FXML
     public void btnDeleteClicked(ActionEvent e){
-        this.dataController.deleteNotebook(nodeName);
-        this.dataController.deleteNote(nodeName);
+        this.database.deleteNotebook(nodeName);
+        this.database.deleteNote(nodeName);
         for (TreeItem<String> ti : root.getChildren()){
             System.out.println(ti.getValue());
             System.out.println(nodeName);

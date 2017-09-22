@@ -19,7 +19,7 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import crynotes.database.Controller;
+import crynotes.database.Database;
 
 /**
  *
@@ -31,7 +31,7 @@ public class Crynotes extends Application {
     
     @Override
     public void start(Stage stage) throws IOException {
-        //Controller controller = new Controller();-*ä
+        //Controller controller = new Database();-*ä
         
         Parent root = FXMLLoader.load(getClass().getResource(Routes.LOGINVIEW));
         JFXDecorator decorator=new JFXDecorator(stage, root, false, false, true);

@@ -22,19 +22,19 @@ import org.sqlite.JDBC;
  *
  * @author mwlltr
  */
-public class Controller {
+public class Database {
     Connection con = null;
     Statement statement = null;
     ArrayList<Notebook> notebooks;
     
     public static void main(String args[]){
-        Controller myController = new Controller();
+        Database myController = new Database();
         System.out.println(myController.getCurrentDateTime());
     }
     
     // Default Constructor
     // Initializes all tables and notebooks list
-    public Controller(){
+    public Database(){
         DatabaseSetup setup = new DatabaseSetup();
         setup.start();
         notebooks = new ArrayList<Notebook>();
@@ -222,7 +222,7 @@ public class Controller {
             //this.addTrashNotes(note.getName(), note.getContent(),note.getNotebookName(), note.getCreated());
             
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
     
@@ -240,7 +240,7 @@ public class Controller {
             this.deleteNotebookFromNotebooks(notebookName);
            
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
     
@@ -259,7 +259,7 @@ public class Controller {
             this.closeConnection();
             
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
     
@@ -275,7 +275,7 @@ public class Controller {
             this.statement.close();           
             this.closeConnection();
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
         
@@ -291,7 +291,7 @@ public class Controller {
             this.statement.close();           
             this.closeConnection();
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
     
@@ -326,7 +326,7 @@ public class Controller {
             
             //this.closeConnection();
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }return note;
     }
     
@@ -369,7 +369,7 @@ public class Controller {
             
             //this.closeConnection();
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }return notebook;
     }
     
@@ -455,7 +455,7 @@ public class Controller {
             this.statement.close();           
             this.closeConnection();
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -538,7 +538,7 @@ public class Controller {
             
             //this.closeConnection();
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -570,7 +570,7 @@ public class Controller {
             
             //this.closeConnection();
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

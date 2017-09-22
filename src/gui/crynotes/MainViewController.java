@@ -54,8 +54,6 @@ public class MainViewController implements Initializable {
     @FXML
     private JFXDrawer sideDrawer;
     
-  
-    
     @FXML
     private JFXDrawer addNotebookDrawer;
     
@@ -71,11 +69,6 @@ public class MainViewController implements Initializable {
         ImageView imageView;
         File imageFile;
         
-        //setup homeButton
-        //imageFile= new File("/home/mwlltr/workspace/Programming/crynotes/src/gui/images/icons8-Plus-15.png");
-        //image = new Image(imageFile.toURI().toString());
-        //imageView = new ImageView(image);
-        //btnAdd.setGraphic(imageView);
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
         transition.setRate(-1);
@@ -93,29 +86,14 @@ public class MainViewController implements Initializable {
             }
 
         });
-        /***
-        
-        btnAdd.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent e) -> {
-            System.out.println("clicked");
-            if (addNotebookDrawer.isShown()){
-                System.out.println("close");
-                addNotebookDrawer.close();
-            }else{
-                System.out.println("open");
-                addNotebookDrawer.setOverLayVisible(true);
-                addNotebookDrawer.open();
-            }
-            
-        });
-        ***/
         
         
         try {
             VBox sidePane = FXMLLoader.load(getClass().getResource(Routes.DRAWERVIEW));
-            AnchorPane notes = FXMLLoader.load(getClass().getResource(Routes.NOTESVIEW));
+            AnchorPane home = FXMLLoader.load(getClass().getResource(Routes.HOMEVIEW));
             AnchorPane settings = FXMLLoader.load(getClass().getResource(Routes.SETTINGSVIEW));
             AnchorPane trash = FXMLLoader.load(getClass().getResource(Routes.TRASHVIEW));
-            setNode(notes);
+            setNode(home);
             sideDrawer.setSidePane(sidePane);
             sideDrawer.open();
             for (Node node : sidePane.getChildren()) {
@@ -124,7 +102,7 @@ public class MainViewController implements Initializable {
                         switch (node.getAccessibleText()) {
                             case "homeMenu":
                                 //drawer.close();
-                                setNode(notes);
+                                setNode(home);
                                 break;  
                             case "settingsMenu":
                                 //drawer.close();
