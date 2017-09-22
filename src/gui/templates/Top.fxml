@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane layoutX="200.0" prefHeight="49.0" prefWidth="825.0" style="-fx-background-color: #2980b9;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.templates.TopController">
+         <children>
+            <ImageView layoutX="740.0" layoutY="15.0">
+               <image>
+                  <Image url="@../images/icons8-Plus-20.png" />
+               </image>
+            </ImageView>
+      <JFXButton layoutX="736.0" onAction="#btnNewClicked" prefHeight="49.0" prefWidth="89.0" text="New" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </JFXButton>
+         </children>
+      </Pane>

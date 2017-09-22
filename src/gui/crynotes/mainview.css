@@ -1,0 +1,17 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+    .jfx-hamburger {
+}
+    .jfx-hamburger StackPane {
+	-fx-background-color: white;
+}
+
+.cbxWorkbooks {
+    -fx-prompt-text-fill: white;
+}
+
+}

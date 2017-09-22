@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
+    <stylesheets>
+        <URL value="@login.css" />
+    </stylesheets>
+   <children>
+      <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2c3e50;">
+         <children>
+            <Label fx:id="lblMain" layoutX="211.0" layoutY="128.0" text="NotesNG" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblExp" layoutX="359.0" layoutY="128.0" text="V1.0" textFill="WHITE" />
+            <JFXButton fx:id="unlock" layoutX="241.0" layoutY="228.0" onAction="#btnUnlockClicked" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #1abc9c;" text="Unlock" textFill="WHITE" />
+            <JFXPasswordField fx:id="passphrase" focusColor="#1abc9c" focusTraversable="false" layoutX="175.0" layoutY="188.0" prefHeight="25.0" prefWidth="250.0" promptText="Type your passphrase ..." style="-fx-prompt-text-fill: white; -fx-text-fill: white;" unFocusColor="WHITE" />
+            <JFXSpinner fx:id="logInProgress" layoutX="276.0" layoutY="219.0" radius="20.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

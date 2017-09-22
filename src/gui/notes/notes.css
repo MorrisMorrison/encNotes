@@ -1,0 +1,35 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+.tree-items{
+         -fx-background-color: white; 
+       -fx-border-style:none;
+}
+
+    
+    .tree-items:focused{
+        -fx-background-color: white;
+        -fx-border-style:none;
+            
+    }
+    .tree-items:hover{
+        -fx-background-color: white;
+        -fx-border-style:none;
+    }
+    
+    .tree-items:focus{
+        -fx-background-color: white;
+        -fx-border-style:none;
+    }
+    .tree-items:selected{
+        -fx-background-color: white;
+        -fx-border-style:none;
+    }
+    
+    .tree-cell:selected {
+    -fx-background-color: #1abc9c;
+    -fx-color:white
+}
+}

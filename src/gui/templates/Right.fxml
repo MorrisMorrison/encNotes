@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane layoutX="470.0" layoutY="48.0" prefHeight="30.0" prefWidth="555.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+         <children>
+            <TextArea layoutY="28.0" prefHeight="518.0" prefWidth="555.0" style="-fx-background-color: white;" text="Sample Text" />
+            <Pane layoutX="2.0" layoutY="-1.0" prefHeight="30.0" prefWidth="555.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="9.0" text="Notename" textFill="#3498db" />
+                  <Label layoutX="113.0" layoutY="10.0" text="Tag1 Tag2 Tag3" textFill="#3498db">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="468.0" layoutY="10.0" text="DD.MM.YYYY">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+      <JFXButton layoutX="478.0" layoutY="509.0" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE" />
+         </children>
+      </Pane>
