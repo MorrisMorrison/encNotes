@@ -60,5 +60,10 @@ public class SettingsController implements Initializable {
         
     }
     
+    @FXML
+    public void btnSaveClicked(ActionEvent e){
+        
+    }
+    
     
 }
