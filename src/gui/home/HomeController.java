@@ -40,7 +40,7 @@ import crynotes.notebook.Notebook;
  *
  * @author mwlltr
  */
-public class NotesController implements Initializable {
+public class HomeController implements Initializable {
    
     @FXML
     private Parent topView;
@@ -126,7 +126,7 @@ public class NotesController implements Initializable {
                          String lastChanged = dateFormat.format(date);
                          txtDate.setText(lastChanged);
                      } catch (ParseException ex) {
-                         Logger.getLogger(NotesController.class.getName()).log(Level.SEVERE, null, ex);
+                         Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
                      }
                  
                  }
