@@ -36,8 +36,9 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <JFXToggleButton layoutX="129.0" layoutY="208.0" text="Encrypt Database" />
-      <JFXPasswordField disable="true" layoutX="144.0" layoutY="266.0" prefHeight="23.0" prefWidth="175.0" promptText="Type Passphrase" />
-      <JFXButton disable="true" layoutX="207.0" layoutY="303.0" style="-fx-background-color: grey;" text="Save" textFill="WHITE" />
+      <JFXToggleButton fx:id="btnEncrypt" layoutX="129.0" layoutY="208.0" onAction="#btnEncryptClicked" text="Encrypt Database" />
+      <JFXPasswordField fx:id="passphrase" disable="true" focusColor="#009688" layoutX="144.0" layoutY="266.0" prefHeight="23.0" prefWidth="175.0" promptText="Passphrase" unFocusColor="#2c3e50" />
+      <JFXButton fx:id="save" disable="true" layoutX="208.0" layoutY="336.0" style="-fx-background-color: #009688;" text="Save" textFill="WHITE" />
+      <JFXPasswordField fx:id="confirm" disable="true" focusColor="#009688" layoutX="145.0" layoutY="298.0" prefHeight="23.0" prefWidth="175.0" promptText="Confirm" unFocusColor="#2c3e50" />
    </children>
 </AnchorPane>

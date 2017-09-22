@@ -16,11 +16,11 @@
     
     
     .drawer-buttons:hover{
-    -fx-background-color: #1abc9c;
+    -fx-background-color: #009688;
     }
     
     .drawer-buttons:focus{
-        -fx-background-color: #1abc9c;
+        -fx-background-color: #009688;
     }
 
 }
