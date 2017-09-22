@@ -16,4 +16,6 @@ public class Routes {
     public static String DRAWERVIEW = "/gui/crynotes/DrawerView.fxml";
     public static String NOTESVIEW = "/gui/notes/Notes.fxml";
     public static String NOTEBOOKSVIEW = "/gui/notebooks/Notebooks.fxml";
+    public static String SETTINGSVIEW = "/gui/settings/Settings.fxml";
+    public static String TRASHVIEW = "/gui/trash/Trash.fxml";
 }

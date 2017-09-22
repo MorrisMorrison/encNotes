@@ -112,11 +112,9 @@ public class MainViewController implements Initializable {
         
         try {
             VBox sidePane = FXMLLoader.load(getClass().getResource(Routes.DRAWERVIEW));
-            AnchorPane home = FXMLLoader.load(getClass().getResource(Routes.HOMEVIEW));
-            AnchorPane notebooks = FXMLLoader.load(getClass().getResource(Routes.NOTEBOOKSVIEW));
             AnchorPane notes = FXMLLoader.load(getClass().getResource(Routes.NOTESVIEW));
-           //AnchorPane setting = FXMLLoader.load(getClass().getResource(Routes.SETTINGSVIEW));
-           //AnchorPane trash = FXMLLoader.load(getClass().getResource(Routes.TRASHVIEW));
+            AnchorPane settings = FXMLLoader.load(getClass().getResource(Routes.SETTINGSVIEW));
+            AnchorPane trash = FXMLLoader.load(getClass().getResource(Routes.TRASHVIEW));
             setNode(notes);
             sideDrawer.setSidePane(sidePane);
             sideDrawer.open();
@@ -126,23 +124,15 @@ public class MainViewController implements Initializable {
                         switch (node.getAccessibleText()) {
                             case "homeMenu":
                                 //drawer.close();
-                                setNode(home);
-                                break;  
-                            case "notebooksMenu":
-                                //drawer.close();
-                                setNode(notebooks);
-                               break;   
-                            case "notesMenu":
-                               // drawer.close();
                                 setNode(notes);
-                                break; 
+                                break;  
                             case "settingsMenu":
                                 //drawer.close();
-                                setNode(home);
+                                setNode(settings);
                                 break; 
                             case "trashMenu":
                                 //drawer.close();
-                                setNode(home);
+                                setNode(trash);
                                 break;
                             case "exitMenu":
                                         Stage appStage = (Stage) ((Node) ev.getSource()).getScene().getWindow();

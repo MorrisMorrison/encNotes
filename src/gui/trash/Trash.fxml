@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -7,11 +9,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.trash.TrashController">
+<AnchorPane id="AnchorPane" prefHeight="710.0" prefWidth="1000.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="gui.trash.TrashController">
     <stylesheets>
-        <URL value="@trash.css"/>
+        <URL value="@trash.css" />
     </stylesheets>
-    <fx:include source="../templates/Left.fxml"></fx:include>
-    <fx:include source="../templates/Top.fxml"></fx:include>
-
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Trash">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="401.0" layoutY="75.0" prefHeight="25.0" prefWidth="69.0" style="-fx-background-color: grey;" text="Delete" textFill="WHITE" />
+      <JFXButton layoutX="401.0" layoutY="106.0" style="-fx-background-color: grey;" text="Restore" textFill="WHITE" />
+      <JFXTreeView layoutX="48.0" layoutY="62.0" prefHeight="618.0" prefWidth="333.0" />
+   </children>
 </AnchorPane>

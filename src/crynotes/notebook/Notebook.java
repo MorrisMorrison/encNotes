@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package notesng.notebook;
+package crynotes.notebook;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.swing.tree.DefaultMutableTreeNode;
-import notesng.note.Note;
+import crynotes.note.Note;
 
 /**
  *

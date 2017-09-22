@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
-import gui.templates.TopController;
 import java.io.File;
 import java.net.URL;
 import java.text.DateFormat;
@@ -32,9 +31,9 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import notesng.controller.Controller;
-import notesng.note.Note;
-import notesng.notebook.Notebook;
+import crynotes.database.Controller;
+import crynotes.note.Note;
+import crynotes.notebook.Notebook;
 
 /**
  * FXML Controller class
@@ -45,9 +44,6 @@ public class NotesController implements Initializable {
    
     @FXML
     private Parent topView;
-    
-    @FXML
-    private TopController topController;
     
     @FXML
     private JFXButton btnSave;

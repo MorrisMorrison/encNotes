@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package notesng.note;
+package crynotes.note;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
