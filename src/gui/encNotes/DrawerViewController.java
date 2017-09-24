@@ -56,6 +56,7 @@ public class DrawerViewController implements Initializable {
         image = new Image(imageFile.toURI().toString());
         imageView = new ImageView(image);
         home.setGraphic(imageView);
+        home.setStyle("-fx-background-color: #009688;");
         
         //setup homeButton
         imageFile= new File("/home/mwlltr/workspace/Programming/notesNG/src/gui/images/icons8-Einstellungen-30.png");

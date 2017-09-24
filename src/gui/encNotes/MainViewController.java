@@ -52,7 +52,7 @@ public class MainViewController implements Initializable {
     @FXML
     private JFXDrawer sideDrawer;
     
-
+    VBox sidePane;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,28 +65,34 @@ public class MainViewController implements Initializable {
 
         
         try {
-            VBox sidePane = FXMLLoader.load(getClass().getResource(Routes.DRAWERVIEW));
+            this.sidePane = FXMLLoader.load(getClass().getResource(Routes.DRAWERVIEW));
             AnchorPane home = FXMLLoader.load(getClass().getResource(Routes.HOMEVIEW));
             AnchorPane settings = FXMLLoader.load(getClass().getResource(Routes.SETTINGSVIEW));
             AnchorPane trash = FXMLLoader.load(getClass().getResource(Routes.TRASHVIEW));
             setNode(home);
-            sideDrawer.setSidePane(sidePane);
+            sideDrawer.setSidePane(this.sidePane);
             sideDrawer.open();
-            for (Node node : sidePane.getChildren()) {
+            for (Node node : this.sidePane.getChildren()) {
                 if (node.getAccessibleText() != null) {
                     node.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
                         switch (node.getAccessibleText()) {
                             case "homeMenu":
                                 //drawer.close();
                                 setNode(home);
+                                unsetButtonsFocus();
+                                node.setStyle("-fx-background-color: #009688;");
                                 break;  
                             case "settingsMenu":
                                 //drawer.close();
                                 setNode(settings);
+                                unsetButtonsFocus();
+                                node.setStyle("-fx-background-color: #009688;");
                                 break; 
                             case "trashMenu":
                                 //drawer.close();
                                 setNode(trash);
+                                unsetButtonsFocus();
+                                node.setStyle("-fx-background-color: #009688;");
                                 break;
                             case "exitMenu":
                                         Stage appStage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
@@ -107,4 +113,21 @@ public class MainViewController implements Initializable {
         holderPane.getChildren().add((Node) node);
     }
     
+    private void unsetButtonsFocus(){
+        for (Node node : this.sidePane.getChildren()) {
+                if (node.getAccessibleText() != null) {
+                        switch (node.getAccessibleText()) {
+                            case "homeMenu":
+                                node.setStyle("-fx-background-color: transparent;");
+                                break;  
+                            case "settingsMenu":
+                                node.setStyle("-fx-background-color: transparent;");
+                                break; 
+                            case "trashMenu":
+                                node.setStyle("-fx-background-color: transparent;");
+                                break;                                                       
+                        }
+                }
+            }
+    }
 }
