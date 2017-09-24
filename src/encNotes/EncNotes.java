@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package crynotes;
+package encNotes;
 
 import com.jfoenix.controls.JFXDecorator;
 import gui.routes.Routes;
@@ -19,13 +19,13 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import crynotes.database.Database;
+import encNotes.database.Database;
 
 /**
  *
  * @author mwlltr
  */
-public class Crynotes extends Application {
+public class EncNotes extends Application {
     
     
     

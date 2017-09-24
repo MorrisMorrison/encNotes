@@ -31,9 +31,9 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import crynotes.database.Database;
-import crynotes.note.Note;
-import crynotes.notebook.Notebook;
+import encNotes.database.Database;
+import encNotes.note.Note;
+import encNotes.notebook.Notebook;
 
 /**
  * FXML Database class

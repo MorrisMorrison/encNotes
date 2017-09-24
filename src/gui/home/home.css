@@ -3,16 +3,16 @@
  */
 
 .mainFxmlClass {
-.tree-items{
-         -fx-background-color: white; 
-       -fx-border-style:none;
-}
+    .tree-items{
+        -fx-background-color: white; 
+        -fx-border-style:none;
+    }
 
     
     .tree-items:focused{
         -fx-background-color: white;
-        -fx-border-style:none;
-            
+        -fx-border-style:none;            
+    
     }
     .tree-items:hover{
         -fx-background-color: white;
@@ -29,7 +29,7 @@
     }
     
     .tree-cell:selected {
-    -fx-background-color: #009688;
-    -fx-color:white
+        -fx-background-color: #009688;
+        -fx-color:white
 }
 }

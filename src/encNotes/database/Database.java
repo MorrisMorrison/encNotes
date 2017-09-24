@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package crynotes.database;
-import crynotes.dbsetup.DatabaseSetup;
+package encNotes.database;
+import encNotes.dbsetup.DatabaseSetup;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,8 +15,8 @@ import java.util.Date;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import crynotes.note.Note;
-import crynotes.notebook.Notebook;
+import encNotes.note.Note;
+import encNotes.notebook.Notebook;
 import org.sqlite.JDBC;
 /**
  *

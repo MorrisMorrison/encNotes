@@ -11,9 +11,9 @@ package gui.routes;
  */
 public class Routes {
     public static String LOGINVIEW = "/gui/login/Login.fxml";
-    public static String MAINVIEW = "/gui/crynotes/MainView.fxml";
+    public static String MAINVIEW = "/gui/encNotes/MainView.fxml";
     public static String HOMEVIEW = "/gui/home/Home.fxml";
-    public static String DRAWERVIEW = "/gui/crynotes/DrawerView.fxml";
+    public static String DRAWERVIEW = "/gui/encNotes/DrawerView.fxml";
     public static String SETTINGSVIEW = "/gui/settings/Settings.fxml";
     public static String TRASHVIEW = "/gui/trash/Trash.fxml";
 }

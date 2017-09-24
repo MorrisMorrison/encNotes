@@ -3,58 +3,51 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package crynotes.notebook;
+package encNotes.note;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import javax.swing.tree.DefaultMutableTreeNode;
-import crynotes.note.Note;
 
 /**
  *
  * @author mwlltr
  */
-public class Notebook {
+public class Note {
     int id;
     String name;
-    String parent;
+    String content;
+    String notebookName;
     String created;
     String lastChanged;
-    ArrayList<Note> notes;
+    ArrayList<String> tags;
     
-    public Notebook(int id, String name, String parent, String created, String lastChanged){
+    public Note(int id, String name, String content, String notebookName, String created, String lastChanged){
         this.id = id;
         this.name = name;
-        this.parent = parent;
+        this.content = content;
+        this.notebookName = notebookName;
         this.created = created;
         this.lastChanged=lastChanged;
-        notes = new ArrayList<Note>();
+        tags = new ArrayList<String>();
     }
     
-    public void addNote(Note note){
-        this.notes.add(note);
-    }
-    
-    public void deleteNote(Note note){
-        this.notes.remove(note);
-    }
-    
-    public ArrayList<Note> getNotes(){
-        return this.notes;
-    }
-    
-    public Note getNote(String noteName){
-        Note note = null;
-        for (ListIterator li = this.notes.listIterator(0); li.hasNext();){
-            note = (Note) li.next();
-            if (note.getName().compareTo(noteName) == 0){
-               return note; 
+    public void deleteTag(String tagName){
+        String tag ="";
+        for (ListIterator li = this.tags.listIterator(0); li.hasNext();){
+            tag = (String) li.next();
+            if (tag.toString().compareTo(tagName) == 0){
+            tags.remove(tag);
             }           
         }
-        return note;
     }
     
+    public ArrayList<String> getTags(){
+        return this.tags;
+    }
     
+    public void addTag(String tagName){
+        tags.add(tagName);
+    }
 
     public int getId() {
         return id;
@@ -72,12 +65,20 @@ public class Notebook {
         this.name = name;
     }
 
-    public String getParent() {
-        return parent;
+    public String getContent() {
+        return content;
     }
 
-    public void setParent(String parent) {
-        this.parent = parent;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getNotebookName() {
+        return notebookName;
+    }
+
+    public void setNotebook(String notebookName) {
+        this.notebookName = notebookName;
     }
 
     public String getCreated() {
@@ -95,8 +96,7 @@ public class Notebook {
     public void setLastChanged(String lastChanged) {
         this.lastChanged = lastChanged;
     }
-
-
     
-
+    
+    
 }
