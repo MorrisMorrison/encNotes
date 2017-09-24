@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -52,7 +53,11 @@ public class MainViewController implements Initializable {
     @FXML
     private JFXDrawer sideDrawer;
     
-    VBox sidePane;
+    private VBox sidePane;
+    private Node homeButton;
+    private Node settingsButton;
+    private Node trashButton;
+    private Node exitButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -72,37 +77,42 @@ public class MainViewController implements Initializable {
             setNode(home);
             sideDrawer.setSidePane(this.sidePane);
             sideDrawer.open();
-            for (Node node : this.sidePane.getChildren()) {
-                if (node.getAccessibleText() != null) {
-                    node.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
-                        switch (node.getAccessibleText()) {
-                            case "homeMenu":
-                                //drawer.close();
-                                setNode(home);
-                                unsetButtonsFocus();
-                                node.setStyle("-fx-background-color: #009688;");
-                                break;  
-                            case "settingsMenu":
-                                //drawer.close();
-                                setNode(settings);
-                                unsetButtonsFocus();
-                                node.setStyle("-fx-background-color: #009688;");
-                                break; 
-                            case "trashMenu":
-                                //drawer.close();
-                                setNode(trash);
-                                unsetButtonsFocus();
-                                node.setStyle("-fx-background-color: #009688;");
-                                break;
-                            case "exitMenu":
-                                        Stage appStage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+            
+            // setup reference to home button
+            this.homeButton = getDrawerButton("homeMenu");
+            
+            // add event handler to home button
+            this.homeButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
+                setNode(home);
+                unsetButtonsFocus();
+                this.homeButton.setStyle("-fx-background-color: #009688;");
+            });
+            
+            this.settingsButton = getDrawerButton("settingsMenu");
+            this.settingsButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
+                setNode(settings);
+                unsetButtonsFocus();
+                this.settingsButton.setStyle("-fx-background-color: #009688;");
+            });
+            
+            
+            
+            this.trashButton = getDrawerButton("trashMenu");
+            this.trashButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
+                setNode(trash);
+                unsetButtonsFocus();
+                this.trashButton.setStyle("-fx-background-color: #009688;");
+            });
+            
+            
+            this.exitButton=getDrawerButton("exitMenu");
+            this.exitButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
+                 Stage appStage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
                                         appStage.close();
-                                                       
-                        }
-                    });
-                }
+            });
+            
+            
 
-            }
         } catch (IOException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -114,20 +124,23 @@ public class MainViewController implements Initializable {
     }
     
     private void unsetButtonsFocus(){
+        Node homeButton = getDrawerButton("homeMenu");
+        homeButton.setStyle("-fx-background-color: transparent;");
+        Node settingsButton = getDrawerButton("settingsMenu");
+        settingsButton.setStyle("-fx-background-color: transparent;");
+        Node trashButton = getDrawerButton("trashMenu");
+        trashButton.setStyle("-fx-background-color: transparent;");
+    }
+    
+    private Node getDrawerButton(String accessibleText){
         for (Node node : this.sidePane.getChildren()) {
                 if (node.getAccessibleText() != null) {
-                        switch (node.getAccessibleText()) {
-                            case "homeMenu":
-                                node.setStyle("-fx-background-color: transparent;");
-                                break;  
-                            case "settingsMenu":
-                                node.setStyle("-fx-background-color: transparent;");
-                                break; 
-                            case "trashMenu":
-                                node.setStyle("-fx-background-color: transparent;");
-                                break;                                                       
+                        if (node.getAccessibleText().equals(accessibleText)){
+                            return node;
                         }
                 }
             }
+        return null;
     }
+    
 }
