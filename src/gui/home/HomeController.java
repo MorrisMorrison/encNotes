@@ -91,7 +91,7 @@ public class HomeController implements Initializable {
         File imageFile;
         
         //setup homeButton
-        imageFile= new File("/home/mwlltr/workspace/Programming/crynotes/src/gui/images/icons8-Save Filled-20.png");
+        imageFile= new File("/home/mwlltr/workspace/Programming/encNotes/src/gui/images/icons8-Save Filled-20.png");
         image = new Image(imageFile.toURI().toString());
         imageView = new ImageView(image);
         btnSave.setGraphic(imageView);
