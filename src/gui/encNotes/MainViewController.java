@@ -47,19 +47,12 @@ public class MainViewController implements Initializable {
      */
     @FXML
     private AnchorPane holderPane;
-    
-    @FXML
-    private JFXHamburger hamburger;
+
     
     @FXML
     private JFXDrawer sideDrawer;
     
-    @FXML
-    private JFXDrawer addNotebookDrawer;
-    
-    @FXML
-    private AnchorPane addNotebookAnchor;
-    
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,23 +63,6 @@ public class MainViewController implements Initializable {
         File imageFile;
         
 
-        HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
-        transition.setRate(-1);
-                    transition.setRate(transition.getRate() * -1);
-                    transition.play();
-  
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent e) -> {
-            transition.setRate(transition.getRate() * -1);
-            transition.play();
-
-            if (sideDrawer.isShown()) {
-                sideDrawer.close();
-            } else {
-                sideDrawer.open();
-            }
-
-        });
-        
         
         try {
             VBox sidePane = FXMLLoader.load(getClass().getResource(Routes.DRAWERVIEW));
