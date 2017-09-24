@@ -27,13 +27,12 @@ import encNotes.database.Database;
  */
 public class EncNotes extends Application {
     
-    
-    
     @Override
     public void start(Stage stage) throws IOException {
-        //Controller controller = new Database();-*ä
         
         Parent root = FXMLLoader.load(getClass().getResource(Routes.LOGINVIEW));
+        
+        
         JFXDecorator decorator=new JFXDecorator(stage, root, false, false, true);
         decorator.setCustomMaximize(false);
         decorator.setBorder(Border.EMPTY);

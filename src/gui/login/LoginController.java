@@ -59,43 +59,67 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
+        // hide progress spinner
         logInProgress.setVisible(false);
     }    
     
     @FXML
     private void btnUnlockClicked(ActionEvent event) throws IOException {
+        
+        // hide input fields
         passphrase.setVisible(false);
         unlock.setVisible(false);
+        
+        // show progress spinner
         logInProgress.setVisible(true);
+        
+        // create a new stage
         Stage stage = new Stage();
+        
+        // create a new Transition
         PauseTransition pauseTransition = new PauseTransition();
-        System.out.println("Complte one");
+        
+        // set length of transition to 3 seconds
         pauseTransition.setDuration(Duration.seconds(3));
-            pauseTransition.setOnFinished(ev-> {
+        
+        // when transition has finished (after 3 seconds)
+        pauseTransition.setOnFinished(ev-> {
             Parent root;
             try {
+                
+                // create mainview as parent root
                 root = FXMLLoader.load(getClass().getResource(Routes.MAINVIEW));
+                
+                // create new decorator in this stage with root as parent
+                // set custom decorator settings
+                // first false value disables fullscreen
+                // second false value disables maximize
                 JFXDecorator decorator = new JFXDecorator(stage, root, false, false, true);
-        decorator.setCustomMaximize(false);
-        decorator.setBorder(Border.EMPTY);
-
+                decorator.setCustomMaximize(false);
+                decorator.setBorder(Border.EMPTY);
+                
+                // create a new scene
                 Scene scene = new Scene(decorator);
+                
                 //scene.getStylesheets().add(HospitalFX.class.getResource("/styles/styles.css").toExternalForm());
+                
                 stage.initStyle(StageStyle.UNDECORATED);
                 stage.setScene(scene);
                 stage.setIconified(false);
                 stage.show();
+                
+                // hide login stage
                 unlock.getScene().getWindow().hide();
+                
             } catch (IOException ex) {
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             }
         
         
             });
-            System.out.println("Complte two");
-
+        
+        // start transition
         pauseTransition.play();
-        System.out.println("Complte one");
         
         
         
