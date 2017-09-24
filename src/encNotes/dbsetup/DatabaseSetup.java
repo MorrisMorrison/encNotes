@@ -32,7 +32,7 @@ Statement statement;
     public void connectToDatabase(){
         try{
         Class.forName("org.sqlite.JDBC");
-             this.con = DriverManager.getConnection("jdbc:sqlite:crynotes.db");
+             this.con = DriverManager.getConnection("jdbc:sqlite:encNotes.db");
         }catch(Exception e){
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
