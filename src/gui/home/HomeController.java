@@ -180,6 +180,7 @@ public class HomeController implements Initializable {
         notebook.setValue(workbookName);
         notebook.setGraphic(notebookIcon);
         root.getChildren().add(notebook);
+        txtAdd.setText("");
         status.setText("Workbook " + workbookName + " added.");
     }
     
