@@ -216,6 +216,7 @@ public class HomeController implements Initializable {
     public void btnDeleteClicked(ActionEvent e){
         this.database.deleteNotebook(nodeName);
         this.database.deleteNote(nodeName);
+        
         for (TreeItem<String> ti : root.getChildren()){
             System.out.println(ti.getValue());
             System.out.println(nodeName);

@@ -14,31 +14,36 @@
         <URL value="@settings.css" />
     </stylesheets>
    <children>
-      <Label layoutX="32.0" layoutY="59.0" text="Theme">
+      <Label layoutX="26.0" layoutY="67.0" text="Database">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <JFXToggleButton layoutX="129.0" layoutY="139.0" text="Run in Background" />
       <Label layoutX="14.0" layoutY="14.0" text="Settings">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="32.0" layoutY="128.0" text="Others">
+      <JFXToggleButton fx:id="btnEncrypt" layoutX="63.0" layoutY="230.0" onAction="#btnEncryptClicked" text="Encrypt Database" />
+      <JFXPasswordField fx:id="passphrase" disable="true" focusColor="#009688" layoutX="69.0" layoutY="277.0" prefHeight="23.0" prefWidth="175.0" promptText="Passphrase" unFocusColor="#2c3e50" />
+      <JFXButton fx:id="save" disable="true" layoutX="132.0" layoutY="359.0" style="-fx-background-color: #009688;" text="Save" textFill="WHITE" />
+      <JFXPasswordField fx:id="confirm" disable="true" focusColor="#009688" layoutX="69.0" layoutY="313.0" prefHeight="23.0" prefWidth="175.0" promptText="Confirm" unFocusColor="#2c3e50" />
+      <Button layoutX="134.0" layoutY="98.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Open" />
+      <Button layoutX="134.0" layoutY="133.0" mnemonicParsing="false" text="Export" />
+      <Label layoutX="69.0" layoutY="101.0" text="Open">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="69.0" layoutY="137.0" text="Export">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="193.0" text="Encryption">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <JFXToggleButton layoutX="129.0" layoutY="70.0" text="Dark Theme" />
-      <Label layoutX="32.0" layoutY="197.0" text="Encryption">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <JFXToggleButton fx:id="btnEncrypt" layoutX="129.0" layoutY="208.0" onAction="#btnEncryptClicked" text="Encrypt Database" />
-      <JFXPasswordField fx:id="passphrase" disable="true" focusColor="#009688" layoutX="144.0" layoutY="266.0" prefHeight="23.0" prefWidth="175.0" promptText="Passphrase" unFocusColor="#2c3e50" />
-      <JFXButton fx:id="save" disable="true" layoutX="208.0" layoutY="336.0" style="-fx-background-color: #009688;" text="Save" textFill="WHITE" />
-      <JFXPasswordField fx:id="confirm" disable="true" focusColor="#009688" layoutX="145.0" layoutY="298.0" prefHeight="23.0" prefWidth="175.0" promptText="Confirm" unFocusColor="#2c3e50" />
    </children>
 </AnchorPane>
