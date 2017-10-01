@@ -8,11 +8,22 @@ package gui.settings;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXToggleButton;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -35,6 +46,12 @@ public class SettingsController implements Initializable {
     
     @FXML
     private JFXButton save;
+    
+    @FXML
+    private JFXButton open;
+    
+    @FXML
+    private JFXButton export;
     
     
     
@@ -61,9 +78,47 @@ public class SettingsController implements Initializable {
     }
     
     @FXML
-    public void btnSaveClicked(ActionEvent e){
+    public void saveClicked(ActionEvent e){
         
     }
+    
+    @FXML
+    public void openClicked(ActionEvent e){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose database");
+        Node source = (Node) e.getSource();
+        Window stage = source.getScene().getWindow();
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null){
+            System.out.println(file.getPath().toString());
+        }else{
+            System.out.println("User cancelled.");
+        }
+    }
+    
+    @FXML
+    public void exportClicked(ActionEvent e){
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose Folder");
+        Node source = (Node) e.getSource();
+        Window stage = source.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null){
+            System.out.println(selectedDirectory.getAbsolutePath());
+            File database = new File("encNotes.db");
+            try {
+                File target = new File(selectedDirectory + "/" + database.getName());
+                System.out.println(target.getAbsolutePath());
+                Files.copy((Path) database.toPath(),(Path) target.toPath(), REPLACE_EXISTING);
+            } catch (IOException ex) {
+                Logger.getLogger(SettingsController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            System.out.println("User cancelled.");
+        }
+    }
+    
+    
     
     
 }
