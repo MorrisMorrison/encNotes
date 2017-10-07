@@ -38,7 +38,7 @@ public class EncNotes extends Application {
         decorator.setBorder(Border.EMPTY);
         
         Scene scene = new Scene(decorator);
-        //scene.getStylesheets().add(HospitalFX.class.getResource("/styles/styles.css").toExternalForm());
+        //scene.getStylesheets().add(EncNotes.class.getResource("/styles/styles.css").toExternalForm());
         stage.initStyle(StageStyle.UNDECORATED);
         
         stage.setScene(scene);

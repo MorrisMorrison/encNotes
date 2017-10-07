@@ -322,7 +322,15 @@ public class Database {
                 lastChanged = rs.getString("lastChanged");
                 
             }
-            note = new Note(id, name, content, notebook, created, lastChanged);
+            
+            ArrayList<String> tags = new ArrayList<String>();
+            sql =   String.format("SELECT * FROM notesTags WHERE noteName = %s", noteName);
+            rs= this.statement.executeQuery(sql);
+            while(rs.next()){
+                tags.add(rs.getString("tagName"));
+            }
+            
+            note = new Note(id, name, content, notebook, created, lastChanged, tags);
             
             //this.closeConnection();
         } catch (SQLException ex) {

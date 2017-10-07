@@ -103,7 +103,7 @@ Statement statement;
             this.statement = this.con.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS notesTags " +
                     "(id INTEGER PRIMARY KEY    AUTOINCREMENT," +
-                    " noteName  TEXT    NOT NULL    UNIQUE," +
+                    " noteName  TEXT    NOT NULL," +
                     " tagName  TEXT    NOT NULL);"
                     ; 
             System.out.println(sql);

@@ -21,15 +21,17 @@ public class Note {
     String lastChanged;
     ArrayList<String> tags;
     
-    public Note(int id, String name, String content, String notebookName, String created, String lastChanged){
+    public Note(int id, String name, String content, String notebookName, String created, String lastChanged, ArrayList<String> tags){
         this.id = id;
         this.name = name;
         this.content = content;
         this.notebookName = notebookName;
         this.created = created;
         this.lastChanged=lastChanged;
-        tags = new ArrayList<String>();
+        this.tags = tags;
     }
+    
+    
     
     public void deleteTag(String tagName){
         String tag ="";

@@ -111,13 +111,16 @@ public class HomeController implements Initializable {
                  if (note.getName().isEmpty()){
                      txtNotename.setText("");
                      txtContent.setText("");
-                     
-                     
                      txtDate.setText(database.getCurrentDateTimeGui());
                  }else{
+                 ArrayList<String> tags = note.getTags();
+                 String tag_str ="";
+                 for (String t : tags){
+                     tag_str+=t + ",";
+                 }
+                 txtTags.setText(tag_str);
                  txtNotename.setText(note.getName());
                  txtContent.setText(note.getContent());
-                 
                  DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.ssss");
                  Date date;
                      try {
@@ -188,6 +191,9 @@ public class HomeController implements Initializable {
     public void btnSaveClicked(ActionEvent e){
         String noteName = txtNotename.getText();
         String tag = txtTags.getText();
+        
+        ArrayList<String> tags = this.seperateTags(tag);
+        
         String content=txtContent.getText();
         String notebookName = getNodeName();
         TreeItem<String> note = new TreeItem<String>();
@@ -202,6 +208,11 @@ public class HomeController implements Initializable {
             }
         }
         this.database.addNote(noteName, content, notebookName);
+        for (String t : tags){
+            System.out.println(t);
+            this.database.addNotesTag(noteName, t);
+        }
+        
         unsetControls();
         
        
@@ -241,6 +252,24 @@ public class HomeController implements Initializable {
     
     public String getNodeName(){
         return this.nodeName;
+    }
+    
+    public ArrayList<String> seperateTags(String tag){
+        ArrayList<String> tags = new ArrayList<String>();
+        String singleTag ="";
+        for (int i = 0; i < tag.length();i++){
+            if (tag.charAt(i) != ','){
+                singleTag += tag.charAt(i);
+            }else{
+                tags.add(singleTag);
+                singleTag="";
+            }
+            if (i == tag.length()-1){
+                tags.add(singleTag);
+            }            
+        }
+        System.out.println(tags);
+        return tags;
     }
     
 }
