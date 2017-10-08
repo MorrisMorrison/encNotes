@@ -98,6 +98,14 @@ public class Note {
     public void setLastChanged(String lastChanged) {
         this.lastChanged = lastChanged;
     }
+
+    @Override
+    public String toString() {
+        return "Note{" + "id=" + id + ", name=" + name + ", content=" + content + ", notebookName=" + notebookName + ", created=" + created + ", lastChanged=" + lastChanged + ", tags=" + tags + '}';
+    }
+    
+    
+    
     
     
     

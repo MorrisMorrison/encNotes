@@ -161,17 +161,19 @@ public class Database {
     
     // adds deleted notes to trashNotes table
     // gets called automatically when deleteNote is called
-    public void addTrashNotes(String noteName,String content, String notebook, String created){
+    public void addTrashNotes(String noteName,String content, String tags, String notebook, String created, String lastChanged){
         try {
                     this.connectToDatabase();
                     this.statement = this.con.createStatement();
                     noteName = this.hyphenString(noteName);
                     content = this.hyphenString(content);
+                    tags = this.hyphenString(tags);
                     notebook = this.hyphenString(notebook);
                     created = this.hyphenString(created);
+                    lastChanged = this.hyphenString(lastChanged);
                     String deleted = this.getCurrentDateTime();
                     deleted = this.hyphenString(deleted);
-                    String sql = String.format("INSERT INTO trashNotes (noteName, content, notebook, created, deleted) VALUES (%s, %s, %s, %s, %s);", noteName, content, notebook, created, deleted);
+                    String sql = String.format("INSERT INTO trashNotes (noteName, content, tags, notebook, created, lastChanged, deleted) VALUES (%s, %s, %s, %s, %s, %s, %s);", noteName, content, tags, notebook, created, lastChanged, deleted);
                     System.out.println(sql);
                     this.statement.executeUpdate(sql);
                     this.closeConnection();
@@ -207,6 +209,11 @@ public class Database {
     public void deleteNote(String noteName){
         Note note = null;
         try {
+            note = this.getNote(noteName);
+            //this.deleteNoteFromNotebook(note.getName(), note.getNotebookName());
+            this.addTrashNotes(note.getName(), note.getContent(), note.getTags().toString(), note.getNotebookName(), note.getCreated(), note.getLastChanged());
+            
+            
             this.connectToDatabase();
             this.statement = this.con.createStatement();
             noteName = this.hyphenString(noteName);
@@ -217,9 +224,7 @@ public class Database {
             this.closeConnection();
             
             
-            //note = this.getNote(noteName);
-            //this.deleteNoteFromNotebook(note.getName(), note.getNotebookName());
-            //this.addTrashNotes(note.getName(), note.getContent(),note.getNotebookName(), note.getCreated());
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -237,7 +242,7 @@ public class Database {
             this.statement.close();           
             this.closeConnection();
             
-            this.deleteNotebookFromNotebooks(notebookName);
+            //this.deleteNotebookFromNotebooks(notebookName);
            
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -404,6 +409,62 @@ public class Database {
     // get a list of all tags of a specific note
     public ArrayList<String> getTagsOfNote(String noteName){
         return this.getNoteOfNotebooks(noteName).getTags();
+    }
+    
+    public ArrayList<Note> getDeletedNotes(){
+        ArrayList<Note> notes = new ArrayList<Note>();
+        ResultSet rs = null;
+        
+         try {
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            String sql = "SELECT * FROM trashNotes";
+            System.out.println(sql);
+            rs = this.statement.executeQuery(sql);
+            
+            
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String noteName = rs.getString("noteName");
+                
+                String tag = rs.getString("tags");
+                
+                ArrayList<String> tags = this.seperateTags(tag);
+                String content = rs.getString("content");
+                String notebook = rs.getString("noteName");
+                String created = rs.getString("noteName");
+                String lastChanged = rs.getString("noteName");
+                
+                Note note = new Note(id, noteName, content, notebook, created, lastChanged, tags);
+                notes.add(note);
+            }
+            
+            this.statement.close();           
+            this.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return notes;
+    }
+    
+     public ArrayList<String> seperateTags(String tag){
+        ArrayList<String> tags = new ArrayList<String>();
+        String singleTag ="";
+        for (int i = 0; i < tag.length();i++){
+            if (tag.charAt(i) != ','){
+                singleTag += tag.charAt(i);
+            }else{
+                tags.add(singleTag);
+                singleTag="";
+            }
+            if (i == tag.length()-1){
+                tags.add(singleTag);
+            }            
+        }
+        System.out.println(tags);
+        return tags;
     }
     
     // search through all notes and return a list of notes containing tagName

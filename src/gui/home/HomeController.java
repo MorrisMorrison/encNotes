@@ -196,7 +196,8 @@ public class HomeController implements Initializable {
         
         ArrayList<String> tags = this.seperateTags(tag);
         
-        String content=txtContent.getHtmlText();
+        String content=txtContent.getHtmlText().toString();
+        content = content.replaceAll("\'", "\"");
         String notebookName = getNodeName();
         TreeItem<String> note = new TreeItem<String>();
         Node noteIcon =  new ImageView(new Image(getClass().getResourceAsStream("../images/icons8-Page Filled-16.png")));

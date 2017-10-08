@@ -141,10 +141,12 @@ Statement statement;
             String sql = "CREATE TABLE IF NOT EXISTS trashNotes " +
                     "(id INTEGER PRIMARY KEY    AUTOINCREMENT," +
                     " noteName  TEXT    NOT NULL    UNIQUE," +
+                    " tags  TEXT    NOT NULL," +
                     " content  TEXT    NOT NULL," +
                     " notebook   TEXT NOT NULL," +
                     " created   TEXT NOT NULL," +
-                    " lastChanged   TEXT NOT NULL);"
+                    " lastChanged   TEXT NOT NULL," +
+                    " deleted   TEXT    NOT NULL);"
                     ; 
             System.out.println(sql);
             this.statement.executeUpdate(sql);
@@ -183,7 +185,7 @@ Statement statement;
         this.createTableNotesTags();
         this.createTableTags();
         this.createTableTrashNotes();
-        this.createTableTrashNotebooks();
+        //this.createTableTrashNotebooks();
     }
     
 }
