@@ -8,7 +8,6 @@
         -fx-border-style:none;
     }
 
-    
     .tree-items:focused{
         -fx-background-color: white;
         -fx-border-style:none;            
@@ -31,5 +30,27 @@
     .tree-cell:selected {
         -fx-background-color: #009688;
         -fx-color:white
-}
-}
+    }
+    
+    .html-editor{
+        -fx-background-color: white; 
+        -fx-border-style:none;
+        
+    }
+    .html-editor:selected{
+        -fx-background-color: white; 
+        -fx-border-style:none;
+    }
+    
+    .html-editor:hover{
+        -fx-background-color: white; 
+        -fx-border-style:none;
+    }
+
+
+    .html-editor:focus{
+            -fx-background-color: white; 
+            -fx-border-style:none;
+        }
+    }
+

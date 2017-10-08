@@ -34,6 +34,7 @@ import javafx.scene.image.ImageView;
 import encNotes.database.Database;
 import encNotes.note.Note;
 import encNotes.notebook.Notebook;
+import javafx.scene.web.HTMLEditor;
 
 /**
  * FXML Database class
@@ -67,7 +68,7 @@ public class HomeController implements Initializable {
     private Label status;
     
     @FXML
-    private JFXTextArea txtContent;
+    private HTMLEditor txtContent;
     
     @FXML
     private TreeView<String> notebooksTreeView;
@@ -110,7 +111,8 @@ public class HomeController implements Initializable {
                  Note note = database.getNote(nodeName);
                  if (note.getName().isEmpty()){
                      txtNotename.setText("");
-                     txtContent.setText("");
+                     txtContent.setHtmlText("");
+                     txtTags.setText("");
                      txtDate.setText(database.getCurrentDateTimeGui());
                  }else{
                  ArrayList<String> tags = note.getTags();
@@ -120,7 +122,7 @@ public class HomeController implements Initializable {
                  }
                  txtTags.setText(tag_str);
                  txtNotename.setText(note.getName());
-                 txtContent.setText(note.getContent());
+                 txtContent.setHtmlText(note.getContent());
                  DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.ssss");
                  Date date;
                      try {
@@ -194,7 +196,7 @@ public class HomeController implements Initializable {
         
         ArrayList<String> tags = this.seperateTags(tag);
         
-        String content=txtContent.getText();
+        String content=txtContent.getHtmlText();
         String notebookName = getNodeName();
         TreeItem<String> note = new TreeItem<String>();
         Node noteIcon =  new ImageView(new Image(getClass().getResourceAsStream("../images/icons8-Page Filled-16.png")));
@@ -246,7 +248,7 @@ public class HomeController implements Initializable {
     public void unsetControls(){
         this.txtNotename.setText("");
         this.txtTags.setText("");
-        this.txtContent.setText("");
+        this.txtContent.setHtmlText("");
         
     }
     
