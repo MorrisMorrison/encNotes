@@ -29,7 +29,7 @@ public class Database {
     
     public static void main(String args[]){
         Database myController = new Database();
-        System.out.println(myController.getCurrentDateTime());
+
     }
     
     // Default Constructor
@@ -54,7 +54,7 @@ public class Database {
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
         }
-        System.out.println("Connection opened...");
+
     }
     
     // Close connection and statement
@@ -67,7 +67,7 @@ public class Database {
            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
            System.exit(0);
         }
-        System.out.println("Connection closed...");
+
     }
    
     // add a note to the database
@@ -83,7 +83,7 @@ public class Database {
                     created = this.hyphenString(created);
                     String lastChanged=created;
                     String sql = String.format("INSERT INTO notes (name, content, notebook, created, lastChanged) VALUES (%s, %s, %s, %s, %s);", noteName, content, notebookName, created, lastChanged);
-                    System.out.println(sql);
+
                     this.statement.executeUpdate(sql);
                     this.closeConnection();
                     
@@ -93,7 +93,7 @@ public class Database {
             } catch (Exception e) {
                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                    System.exit(0);
-                }System.out.println("Values inserted...");
+                }
     }
     
     // add a notebook to the database
@@ -108,7 +108,7 @@ public class Database {
                     created = this.hyphenString(created);
                     String lastChanged=created;
                     String sql = String.format("INSERT INTO notebooks(name, parent, created, lastChanged) VALUES (%s, %s, %s, %s);", notebookName, parent, created, lastChanged);
-                    System.out.println(sql);
+               
                     this.statement.execute(sql);
                     this.closeConnection();
                     
@@ -117,7 +117,7 @@ public class Database {
             } catch (Exception e) {
                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                    System.exit(0);
-                }System.out.println("Values inserted...");
+                }
     }
     
     // add a tag to the database
@@ -129,7 +129,7 @@ public class Database {
                     this.statement = this.con.createStatement();
                     tagName = this.hyphenString(tagName);
                     String sql = String.format("INSERT INTO tags (name) VALUES (%s);", tagName);
-                    System.out.println(sql);
+                   
                     this.statement.executeUpdate(sql);
                     this.closeConnection();
                     this.addTagToNote(noteName, tagName);
@@ -137,7 +137,7 @@ public class Database {
             } catch (Exception e) {
                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                    System.exit(0);
-                }System.out.println("Values inserted...");
+                }
     }
     
     // adds a notename and a tagname to notesTag table
@@ -149,14 +149,14 @@ public class Database {
                     noteName = this.hyphenString(noteName);
                     tagName = this.hyphenString(tagName);
                     String sql = String.format("INSERT INTO notesTags (noteName, tagName) VALUES (%s, %s);", noteName, tagName);
-                    System.out.println(sql);
+                   
                     this.statement.executeUpdate(sql);
                     this.closeConnection();
 
             } catch (Exception e) {
                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                    System.exit(0);
-                }System.out.println("Values inserted...");
+                }
     }
     
     // adds deleted notes to trashNotes table
@@ -174,14 +174,14 @@ public class Database {
                     String deleted = this.getCurrentDateTime();
                     deleted = this.hyphenString(deleted);
                     String sql = String.format("INSERT INTO trashNotes (noteName, content, tags, notebook, created, lastChanged, deleted) VALUES (%s, %s, %s, %s, %s, %s, %s);", noteName, content, tags, notebook, created, lastChanged, deleted);
-                    System.out.println(sql);
+                   
                     this.statement.executeUpdate(sql);
                     this.closeConnection();
 
             } catch (Exception e) {
                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                    System.exit(0);
-                }System.out.println("Values inserted...");
+                }
     }
     
     // adds deleted notebook to trashNotebooks table
@@ -195,14 +195,14 @@ public class Database {
                     created = this.hyphenString(created);
                     deleted = this.hyphenString(deleted);
                     String sql = String.format("INSERT INTO trashNotebooks (notebookName,parent, created, deleted) VALUES (%s, %s, %s, %s);", notebookName, parent, created, deleted);
-                    System.out.println(sql);
+                   
                     this.statement.executeUpdate(sql);
                     this.closeConnection();
 
             } catch (Exception e) {
                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                    System.exit(0);
-                }System.out.println("Values inserted...");
+                }
     }
     
     // deletes a note from database and from noteslist of workbook object in workbooks list
@@ -218,7 +218,7 @@ public class Database {
             this.statement = this.con.createStatement();
             noteName = this.hyphenString(noteName);
             String sql = String.format("DELETE from notes WHERE name = %s;", noteName);
-            System.out.println(sql);
+            
             this.statement.executeUpdate(sql);
             this.statement.close();           
             this.closeConnection();
@@ -237,7 +237,7 @@ public class Database {
             this.statement = this.con.createStatement();
             notebookName = this.hyphenString(notebookName);
             String sql = String.format("DELETE from notebooks WHERE name = %s;", notebookName);
-            System.out.println(sql);
+          
             this.statement.executeUpdate(sql);
             this.statement.close();           
             this.closeConnection();
@@ -256,7 +256,7 @@ public class Database {
             this.statement = this.con.createStatement();
             tagName = this.hyphenString(tagName);
             String sql = String.format("DELETE from tags WHERE name = %s;", tagName);
-            System.out.println(sql);
+       
             this.statement.executeUpdate(sql);
             sql = String.format("DELETE from notesTags WHERE tagName = %s,", tagName);
             this.statement.executeUpdate(sql);
@@ -274,8 +274,8 @@ public class Database {
             this.connectToDatabase();
             this.statement = this.con.createStatement();
             noteName = this.hyphenString(noteName);
-            String sql = String.format("DELETE from trashNotes WHERE notesName = %s;", noteName);
-            System.out.println(sql);
+            String sql = String.format("DELETE from trashNotes WHERE noteName = %s;", noteName);
+            
             this.statement.executeUpdate(sql);
             this.statement.close();           
             this.closeConnection();
@@ -291,7 +291,7 @@ public class Database {
             this.statement = this.con.createStatement();
             notebookName = this.hyphenString(notebookName);
             String sql = String.format("DELETE from trashNotebooks WHERE workbookName = %s;", notebookName);
-            System.out.println(sql);
+        
             this.statement.executeUpdate(sql);
             this.statement.close();           
             this.closeConnection();
@@ -419,7 +419,7 @@ public class Database {
             this.connectToDatabase();
             this.statement = this.con.createStatement();
             String sql = "SELECT * FROM trashNotes";
-            System.out.println(sql);
+        
             rs = this.statement.executeQuery(sql);
             
             
@@ -431,9 +431,9 @@ public class Database {
                 
                 ArrayList<String> tags = this.seperateTags(tag);
                 String content = rs.getString("content");
-                String notebook = rs.getString("noteName");
-                String created = rs.getString("noteName");
-                String lastChanged = rs.getString("noteName");
+                String notebook = rs.getString("notebook");
+                String created = rs.getString("created");
+                String lastChanged = rs.getString("lastChanged");
                 
                 Note note = new Note(id, noteName, content, notebook, created, lastChanged, tags);
                 notes.add(note);
@@ -447,6 +447,42 @@ public class Database {
         
         
         return notes;
+    }
+    
+    public Note getDeletedNote(String noteName){
+        ResultSet rs = null;
+        Note note = null;
+         try {
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            noteName = this.hyphenString(noteName);
+            String sql = String.format("SELECT * FROM trashNotes WHERE noteName = %s", noteName);
+
+            rs = this.statement.executeQuery(sql);
+            
+            
+            while(rs.next()){
+                int id = rs.getInt("id");
+                
+                String tag = rs.getString("tags");
+                
+                ArrayList<String> tags = this.seperateTags(tag);
+                String content = rs.getString("content");
+                String notebook = rs.getString("notebook");
+                String created = rs.getString("created");
+                String lastChanged = rs.getString("lastChanged");
+                
+                note = new Note(id, noteName, content, notebook, created, lastChanged, tags);
+            }
+            
+            this.statement.close();           
+            this.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return note;
     }
     
      public ArrayList<String> seperateTags(String tag){
@@ -463,7 +499,7 @@ public class Database {
                 tags.add(singleTag);
             }            
         }
-        System.out.println(tags);
+
         return tags;
     }
     
@@ -628,8 +664,7 @@ public class Database {
                 notebook = rs.getString("notebook");
                 for (Notebook nb : this.notebooks){
                     if (nb.getName().equals(notebook)){
-                        System.out.println(nb.getName());
-                        System.out.println(notebook);
+
                         
                         nb.addNote(note);
                     }

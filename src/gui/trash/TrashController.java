@@ -5,6 +5,7 @@
  */
 package gui.trash;
 
+import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.util.Callback;
@@ -53,20 +55,26 @@ public class TrashController implements Initializable {
     @FXML
     private TableColumn clmLastChanged;
     
+    @FXML
+    private JFXButton btnDelete;
     
+    @FXML
+    private JFXButton btnRestore;
     
+    private Database database;
     
+    private ObservableList<Note> tableData;
     
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
-        Database database = new Database();
+        System.out.println("INITIALIZE TRASH");
+        database = new Database();
         ArrayList<Note> notes = database.getDeletedNotes();
         
-        ObservableList<Note> tableData = FXCollections.observableArrayList();
+        tableData = FXCollections.observableArrayList();
         
         for(Note note : notes){
             System.out.println(note.toString());
@@ -116,6 +124,25 @@ public class TrashController implements Initializable {
         
         
     }   
+    
+    
+    
+    @FXML
+    public void btnDeleteClicked(ActionEvent e){
+        Note note = tblTrash.getSelectionModel().getSelectedItem();
+        System.out.println(note.getName());
+        database.deleteTrashNotes(note.getName());
+        tableData.remove(note);
+    }
 
+    @FXML
+    public void btnRestoreClicked(ActionEvent e){
+        Note note = tblTrash.getSelectionModel().getSelectedItem();
+        note.setContent(database.getDeletedNote(note.getName()).getContent());
+        database.addNote(note.getName(), note.getContent(), note.getNotebookName());
+        database.deleteTrashNotes(note.getName());
+        tableData.remove(note);
+        //database.addNotebook(note.getNotebookName(), "root");        
+    }
     
 }

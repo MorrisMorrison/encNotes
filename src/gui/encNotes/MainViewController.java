@@ -73,7 +73,7 @@ public class MainViewController implements Initializable {
             this.sidePane = FXMLLoader.load(getClass().getResource(Routes.DRAWERVIEW));
             AnchorPane home = FXMLLoader.load(getClass().getResource(Routes.HOMEVIEW));
             AnchorPane settings = FXMLLoader.load(getClass().getResource(Routes.SETTINGSVIEW));
-            AnchorPane trash = FXMLLoader.load(getClass().getResource(Routes.TRASHVIEW));
+            
             setNode(home);
             sideDrawer.setSidePane(this.sidePane);
             sideDrawer.open();
@@ -83,7 +83,14 @@ public class MainViewController implements Initializable {
             
             // add event handler to home button
             this.homeButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
-                setNode(home);
+                AnchorPane home_new;
+                try {
+                    home_new = FXMLLoader.load(getClass().getResource(Routes.HOMEVIEW));
+                    setNode(home_new);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
                 unsetButtonsFocus();
                 this.homeButton.setStyle("-fx-background-color: #009688;");
             });
@@ -95,11 +102,18 @@ public class MainViewController implements Initializable {
                 this.settingsButton.setStyle("-fx-background-color: #009688;");
             });
             
-            
+                
             
             this.trashButton = getDrawerButton("trashMenu");
             this.trashButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
-                setNode(trash);
+                AnchorPane trash;
+                try {
+                    trash = FXMLLoader.load(getClass().getResource(Routes.TRASHVIEW));
+                    setNode(trash);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
                 unsetButtonsFocus();
                 this.trashButton.setStyle("-fx-background-color: #009688;");
             });

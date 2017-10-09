@@ -37,7 +37,7 @@ Statement statement;
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
         }
-        System.out.println("Connection opened...");
+     
     }
     
     // Close connection and statement
@@ -50,7 +50,7 @@ Statement statement;
            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
            System.exit(0);
         }
-        System.out.println("Connection closed...");
+        
     }
     
         // Create a table to store notes
@@ -66,13 +66,13 @@ Statement statement;
                     " created   TEXT NOT NULL," +
                     " lastChanged   TEXT NOT NULL)"
                     ; 
-            System.out.println(sql);
+       
             this.statement.executeUpdate(sql);
             this.closeConnection();
         } catch (Exception e) {
            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
            System.exit(0);
-        }System.out.println("Table Snippet created...");
+        }
     }
     
     // Create a table to store notebooks
@@ -87,13 +87,13 @@ Statement statement;
                     " created   TEXT NOT NULL," +
                     " lastChanged   TEXT NOT NULL)"
                     ; 
-            System.out.println(sql);
+            
             this.statement.executeUpdate(sql);
             this.closeConnection();
         } catch (Exception e) {
            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
            System.exit(0);
-        }System.out.println("Table Snippet created...");
+        }
     }
 
     // Create a table to connect notes to tags
@@ -106,13 +106,13 @@ Statement statement;
                     " noteName  TEXT    NOT NULL," +
                     " tagName  TEXT    NOT NULL);"
                     ; 
-            System.out.println(sql);
+            
             this.statement.executeUpdate(sql);
             this.closeConnection();
         } catch (Exception e) {
            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
            System.exit(0);
-        }System.out.println("Table Snippet created...");
+        }
     }
     
     // Create a table to store tags in
@@ -124,13 +124,13 @@ Statement statement;
                     "(id INTEGER PRIMARY KEY    AUTOINCREMENT," +
                     " name  TEXT    NOT NULL    UNIQUE);"
                     ; 
-            System.out.println(sql);
+            
             this.statement.executeUpdate(sql);
             this.closeConnection();
         } catch (Exception e) {
            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
            System.exit(0);
-        }System.out.println("Table Snippet created...");
+        }
     }
     
     // Create a table to store deleted notes to be able to restore them
@@ -148,13 +148,13 @@ Statement statement;
                     " lastChanged   TEXT NOT NULL," +
                     " deleted   TEXT    NOT NULL);"
                     ; 
-            System.out.println(sql);
+            
             this.statement.executeUpdate(sql);
             this.closeConnection();
         } catch (Exception e) {
            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
            System.exit(0);
-        }System.out.println("Table Snippet created...");
+        }
     }
     
     // Create a table to store deleted notebooks to be able to restore them
@@ -169,13 +169,13 @@ Statement statement;
                     " created   TEXT NOT NULL," +
                     " deleted   TEXT NOT NULL);"
                     ; 
-            System.out.println(sql);
+            
             this.statement.executeUpdate(sql);
             this.closeConnection();
         } catch (Exception e) {
            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
            System.exit(0);
-        }System.out.println("Table Snippet created...");
+        }
     }
     
     // Setup all tables
