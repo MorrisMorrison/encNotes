@@ -71,41 +71,35 @@ public class Database {
     }
    
     // add a note to the database
-    // also adds a note to notebook object in notebooks list
+    // if a note is added that already exists
+    // notedata is updated
     public void addNote(String noteName,String content, String notebookName){
         try {
                     
                     Note note = null;
-            
-                    //if a note needs to be updated and not added
-                    //the variable notebookName contains the actual noteName
-                    //therefore we need to check if this notebook exists
-                    //if not the note needs to be updated
-                    //else to be added
                     boolean exists;
-                    
                     Notebook notebook = this.getNotebook(notebookName);
                     
-
-                    //check if note already exists
+                    // if a user selects a note, edits it and saves his changes
+                    // the given vaviable notebookName contains the actual name of the note,
+                    // because the homeController always passes the name of the selected node.
                     
-                    System.out.println("ID: " + notebook.getId());
-                    System.out.println("Name: " + notebook.getName());
+                    // we need to check if the given variable notebookName is really the name of a notebook
+                    // therefore we simply check if this notebook exists
                     
-                    
-                    //if id is not null
-                    //the note already exists
+                    // if id is 0
+                    // the notebook doesn't exists
+                    // so the given variable in notebookName is the name of the selected note
                     if (notebook.getId() == 0){
                         exists = true;
+                        // create a note of the given noteName (in this case from notebookName variable)
+                        // to get the name of the note and the actual notebookName before we change it
                         note = this.getNote(notebookName);
-                        System.out.println("ID: " + note.getId());
-                        System.out.println("Name: " + note.getName());
-                        System.out.println("Notenook: " + note.getNotebookName());
                     }else{
-                        //if note doesn't exist 
                         exists=false;
-                        
                     }
+                    
+                    
                     this.connectToDatabase();
                     this.statement = this.con.createStatement();
                     notebookName = this.hyphenString(notebookName);
@@ -115,19 +109,19 @@ public class Database {
                     created = this.hyphenString(created);
                     String lastChanged=created;
                     String sql="";
-                    System.out.println("Exists:" + exists);
+                    
+                    // if note doesnt exist already
+                    // a new note is added
                     if (exists==false){
                         sql = String.format("INSERT INTO notes (name, content, notebook, created, lastChanged) VALUES (%s, %s, %s, %s, %s);", noteName, content, notebookName, created, lastChanged);
                     }else{
+                    // if note exists
+                    // note is updated
                         sql = String.format("UPDATE notes SET name = %s, content =%s, notebook=%s, lastChanged = %s WHERE name =%s", noteName, content, this.hyphenString(note.getNotebookName()), lastChanged, this.hyphenString(note.getName()));
                     }
 
-                    System.out.println(sql);
                     this.statement.executeUpdate(sql);
                     this.closeConnection();
-                    
-                    //this.addNoteToNotebook(noteName, notebookName);
-                    
 
             } catch (Exception e) {
                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -179,63 +173,51 @@ public class Database {
                 }
     }
     
-    public boolean tagExists(String noteName, String tagName){
-        ResultSet rs = null;
-        int id = 0;
-        try {
-            this.connectToDatabase();
-            this.statement = this.con.createStatement();
-            noteName = this.hyphenString(noteName);
-            tagName = this.hyphenString(tagName);
-            String sql = String.format("SELECT * FROM notesTags WHERE noteName = %s AND tagName = %s;", noteName, tagName);
-            rs = this.statement.executeQuery(sql);
-            while (rs.next()){
-                id = rs.getInt("id");
-            }
-            
-            
-            //this.closeConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (id == 0){
-            return false;
-        }else{
-            return true;
-        }
-    }
+
     
-    // adds a notename and a tagname to notesTag table
-    // gets called automatically when a addTag is called
+    // add a tag to the database
+    // if a tag is added that already exists
+    // only the notename is updated
     public void addNotesTag(String noteName,String tagName, String notebookName){
         try {
                     Notebook notebook = this.getNotebook(notebookName);
+                    
+                    
+                    // if a user selects a note, edits it and saves his changes
+                    // the given vaviable notebookName contains the actual name of the note,
+                    // because the homeController always passes the name of the selected node.
+                    
+                    // we need to check if the given variable notebookName is really the name of a notebook
+                    // therefore we simply check if this notebook exists
+                    
+                    
                     this.connectToDatabase();
                     this.statement = this.con.createStatement();
                     String sql;  
+                    
+                    // if notebook id isn't 0
+                    // the user selected a notebook
+                    // and new tags need to be added
                     if(notebook.getId() != 0){
-                     if (this.tagExists(noteName, tagName) == false){
-                        noteName = this.hyphenString(noteName);
-                        tagName = this.hyphenString(tagName);
-                        sql = String.format("INSERT INTO notesTags (noteName, tagName) VALUES (%s, %s);", noteName, tagName);
-                        //sql = String.format("UPDATE notesTags SET noteName = %s AND tagName = %s;", noteName, tagName);
-                        this.statement.executeUpdate(sql);
-                    }
+
+                            noteName = this.hyphenString(noteName);
+                            tagName = this.hyphenString(tagName);
+                            sql = String.format("INSERT INTO notesTags (noteName, tagName) VALUES (%s, %s);", noteName, tagName);
+                            this.statement.executeUpdate(sql);
+                    
+                    // if user didn't select a notebook
+                    // tags need to be updated
                     }else{
+                        
                         notebookName = this.hyphenString(notebookName);
                         noteName = this.hyphenString(noteName);
                         tagName = this.hyphenString(tagName);
-                        //sql = String.format("INSERT INTO notesTags (noteName, tagName) VALUES (%s, %s);", noteName, tagName);
                         sql = String.format("UPDATE notesTags SET noteName = %s WHERE noteName = %s AND tagName = %s;", noteName, notebookName, tagName);
                          System.out.println("SQL: " + sql);
                         this.statement.executeUpdate(sql);
+                        
                      }
-                    
-                    
-                                     
-                   
                     this.closeConnection();
-
             } catch (Exception e) {
                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                    System.exit(0);
@@ -411,6 +393,7 @@ public class Database {
                 
             }
             
+            // select all tags of this notes and add them to an ArrayList seperately
             ArrayList<String> tags = new ArrayList<String>();
             sql =   String.format("SELECT * FROM notesTags WHERE noteName = %s", noteName);
             System.out.println(sql);
