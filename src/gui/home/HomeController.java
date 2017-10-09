@@ -179,6 +179,7 @@ public class HomeController implements Initializable {
         
         String workbookName = txtAdd.getText();
         System.out.println(workbookName);
+        
         this.database.addNotebook(workbookName, "root");
         TreeItem<String> notebook = new TreeItem<String>();
         Node notebookIcon =  new ImageView(new Image(getClass().getResourceAsStream("../images/icons8-Book Filled-16-orange.png")));
@@ -210,10 +211,13 @@ public class HomeController implements Initializable {
                 ti.getChildren().add(note);
             }
         }
+        
         this.database.addNote(noteName, content, notebookName);
+        
+        
         for (String t : tags){
             System.out.println(t);
-            this.database.addNotesTag(noteName, t);
+            this.database.addNotesTag(noteName, t, notebookName);
         }
         
         unsetControls();
