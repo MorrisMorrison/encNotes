@@ -140,6 +140,14 @@ public class TrashController implements Initializable {
         Note note = tblTrash.getSelectionModel().getSelectedItem();
         note.setContent(database.getDeletedNote(note.getName()).getContent());
         database.addNote(note.getName(), note.getContent(), note.getNotebookName());
+        ArrayList<String> tags = note.getTags();
+        for (String tag : tags){
+            tag = tag.replace('[', ' ');
+            tag = tag.replace(']', ' ');
+            tag = tag.trim();
+            System.out.println("Tag: " + tag);
+            database.addNotesTag(note.getName(),tag, note.getNotebookName());
+        }
         database.deleteTrashNotes(note.getName());
         tableData.remove(note);
         //database.addNotebook(note.getNotebookName(), "root");        

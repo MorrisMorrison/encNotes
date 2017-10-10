@@ -194,9 +194,7 @@ public class HomeController implements Initializable {
     public void btnSaveClicked(ActionEvent e){
         String noteName = txtNotename.getText();
         String tag = txtTags.getText();
-        
         ArrayList<String> tags = this.seperateTags(tag);
-        
         String content=txtContent.getHtmlText().toString();
         content = content.replaceAll("\'", "\"");
         String notebookName = getNodeName();
@@ -204,6 +202,7 @@ public class HomeController implements Initializable {
         Node noteIcon =  new ImageView(new Image(getClass().getResourceAsStream("../images/icons8-Page Filled-16.png")));
         note.setValue(noteName);
         note.setGraphic(noteIcon);
+        
         for (TreeItem<String> ti : root.getChildren()){
             System.out.println(ti.getValue());
             System.out.println(notebookName);
@@ -234,6 +233,7 @@ public class HomeController implements Initializable {
     public void btnDeleteClicked(ActionEvent e){
         this.database.deleteNotebook(nodeName);
         this.database.deleteNote(nodeName);
+        this.database.deleteNotesTags(nodeName);
         
         for (TreeItem<String> ti : root.getChildren()){
             System.out.println(ti.getValue());

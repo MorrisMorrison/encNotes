@@ -348,6 +348,8 @@ public class Database {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
+    
+    
         
     // deletes a notebook stored in trashNotebooks table
     public void deleteTrashNotebooks(String notebookName){
@@ -355,7 +357,7 @@ public class Database {
             this.connectToDatabase();
             this.statement = this.con.createStatement();
             notebookName = this.hyphenString(notebookName);
-            String sql = String.format("DELETE from trashNotebooks WHERE workbookName = %s;", notebookName);
+            String sql = String.format("DELETE from trashNotebooks WHERE notebookName = %s;", notebookName);
         
             this.statement.executeUpdate(sql);
             this.statement.close();           
@@ -363,7 +365,23 @@ public class Database {
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }   
+    
+     // deletes a notebook stored in trashNotebooks table
+    public void deleteNotesTags(String noteName){
+        try {
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            noteName = this.hyphenString(noteName);
+            String sql = String.format("DELETE from notesTags WHERE noteName = %s;", noteName);
+        
+            this.statement.executeUpdate(sql);
+            this.statement.close();           
+            this.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }   
     
     // creates a new note object with information from database and returns it
     public Note getNote(String noteName){
@@ -553,7 +571,9 @@ public class Database {
         return note;
     }
     
-     public ArrayList<String> seperateTags(String tag){
+    // get a string of tags seperated by commas
+    // split them and add single tags to an ArrayList
+    public ArrayList<String> seperateTags(String tag){
         ArrayList<String> tags = new ArrayList<String>();
         String singleTag ="";
         for (int i = 0; i < tag.length();i++){
