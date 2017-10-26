@@ -52,26 +52,26 @@ public class DrawerViewController implements Initializable {
         File imageFile;
         
         //setup homeButton
-        imageFile= new File("/home/mwlltr/workspace/Programming/notesNG/src/gui/images/icons8-Zuhause-30.png");
+        imageFile= new File("/home/mwlltr/workspace/Programming/encNotes/src/gui/images/icons8-Zuhause-30.png");
         image = new Image(imageFile.toURI().toString());
         imageView = new ImageView(image);
         home.setGraphic(imageView);
         home.setStyle("-fx-background-color: #009688;");
         
         //setup homeButton
-        imageFile= new File("/home/mwlltr/workspace/Programming/notesNG/src/gui/images/icons8-Einstellungen-30.png");
+        imageFile= new File("/home/mwlltr/workspace/Programming/encNotes/src/gui/images/icons8-Einstellungen-30.png");
         image = new Image(imageFile.toURI().toString());
         imageView = new ImageView(image);
         settings.setGraphic(imageView);
         
         //setup homeButton
-        imageFile= new File("/home/mwlltr/workspace/Programming/notesNG/src/gui/images/icons8-Müll-30.png");
+        imageFile= new File("/home/mwlltr/workspace/Programming/encNotes/src/gui/images/icons8-Müll-30.png");
         image = new Image(imageFile.toURI().toString());
         imageView = new ImageView(image);
         trash.setGraphic(imageView);
         
         //setup homeButton
-        imageFile= new File("/home/mwlltr/workspace/Programming/notesNG/src/gui/images/icons8-Abmelden abgerundet-30.png");
+        imageFile= new File("/home/mwlltr/workspace/Programming/encNotes/src/gui/images/icons8-Abmelden abgerundet-30.png");
         image = new Image(imageFile.toURI().toString());
         imageView = new ImageView(image);
         exit.setGraphic(imageView);

@@ -22,10 +22,18 @@ import org.sqlite.JDBC;
  *
  * @author mwlltr
  */
+
+
+
 public class Database {
     Connection con = null;
     Statement statement = null;
     ArrayList<Notebook> notebooks;
+    private static String databasePath;
+    
+    public static void setDatabasePath(String path){
+        databasePath = path;
+    }
     
     public static void main(String args[]){
         Database myController = new Database();
@@ -42,6 +50,7 @@ public class Database {
         this.initNotes();
     }
     
+    
     // Database interaction
     
     // Create connection to the database
@@ -49,13 +58,15 @@ public class Database {
     public void connectToDatabase(){
         try{
             Class.forName("org.sqlite.JDBC");
-             this.con = DriverManager.getConnection("jdbc:sqlite:encNotes.db");
+            String connectionString = "jdbc:sqlite:" + databasePath;
+             this.con = DriverManager.getConnection(connectionString);
         }catch(Exception e){
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
         }
 
     }
+    
     
     // Close connection and statement
     public void closeConnection(){
@@ -119,7 +130,7 @@ public class Database {
                     // note is updated
                         sql = String.format("UPDATE notes SET name = %s, content =%s, notebook=%s, lastChanged = %s WHERE name =%s", noteName, content, this.hyphenString(note.getNotebookName()), lastChanged, this.hyphenString(note.getName()));
                     }
-
+                    
                     this.statement.executeUpdate(sql);
                     this.closeConnection();
 

@@ -47,8 +47,6 @@ public class SettingsController implements Initializable {
     @FXML
     private JFXButton save;
     
-    @FXML
-    private JFXButton open;
     
     @FXML
     private JFXButton export;
@@ -82,20 +80,7 @@ public class SettingsController implements Initializable {
         
     }
     
-    @FXML
-    public void openClicked(ActionEvent e){
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose database");
-        Node source = (Node) e.getSource();
-        Window stage = source.getScene().getWindow();
-        File file = fileChooser.showOpenDialog(stage);
-        if (file != null){
-            System.out.println(file.getPath().toString());
-        }else{
-            System.out.println("User cancelled.");
-        }
-    }
-    
+
     @FXML
     public void exportClicked(ActionEvent e){
         DirectoryChooser directoryChooser = new DirectoryChooser();

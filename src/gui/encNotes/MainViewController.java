@@ -59,6 +59,9 @@ public class MainViewController implements Initializable {
     private Node trashButton;
     private Node exitButton;
     
+    
+   
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -73,7 +76,6 @@ public class MainViewController implements Initializable {
             this.sidePane = FXMLLoader.load(getClass().getResource(Routes.DRAWERVIEW));
             AnchorPane home = FXMLLoader.load(getClass().getResource(Routes.HOMEVIEW));
             AnchorPane settings = FXMLLoader.load(getClass().getResource(Routes.SETTINGSVIEW));
-            
             setNode(home);
             sideDrawer.setSidePane(this.sidePane);
             sideDrawer.open();
@@ -131,6 +133,7 @@ public class MainViewController implements Initializable {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
+    
     
     private void setNode(Node node) {
         holderPane.getChildren().clear();
