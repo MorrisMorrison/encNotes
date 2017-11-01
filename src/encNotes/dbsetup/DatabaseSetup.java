@@ -178,6 +178,25 @@ Statement statement;
         }
     }
     
+    public void createTableCheck(){
+        try {
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            String sql = "CREATE TABLE IF NOT EXISTS checkPassword " +
+                    "(id INTEGER PRIMARY KEY    AUTOINCREMENT," +
+                    " name  TEXT    NOT NULL    UNIQUE);"
+                    ; 
+            
+            this.statement.executeUpdate(sql);
+            this.closeConnection();
+        } catch (Exception e) {
+           System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+           System.exit(0);
+        }
+    }
+    
+
+    
     // Setup all tables
     public void setupDatabase(){
         this.createTableNotes();
@@ -185,6 +204,7 @@ Statement statement;
         this.createTableNotesTags();
         this.createTableTags();
         this.createTableTrashNotes();
+        this.createTableCheck();
         //this.createTableTrashNotebooks();
     }
     

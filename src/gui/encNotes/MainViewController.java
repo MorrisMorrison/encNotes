@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import encNotes.encryption.DBEncTools;
 import gui.routes.Routes;
 import java.io.File;
 import java.io.IOException;
@@ -123,6 +124,8 @@ public class MainViewController implements Initializable {
             
             this.exitButton=getDrawerButton("exitMenu");
             this.exitButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ev) -> {
+                DBEncTools dbEncTools = new DBEncTools();
+                dbEncTools.encryptDatabase();
                  Stage appStage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
                                         appStage.close();
             });

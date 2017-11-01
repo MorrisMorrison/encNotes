@@ -11,6 +11,8 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import encNotes.database.Database;
+import encNotes.encryption.AES;
+import encNotes.encryption.DBEncTools;
 import gui.encNotes.MainViewController;
 import gui.routes.Routes;
 import java.io.File;
@@ -24,9 +26,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import static javafx.scene.AccessibleRole.BUTTON;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
@@ -69,6 +74,8 @@ public class LoginController implements Initializable {
     @FXML
     private JFXSpinner logInProgress;
     
+    private String password;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -91,6 +98,28 @@ public class LoginController implements Initializable {
     private void btnUnlockClicked(ActionEvent event) throws IOException {
         String databasePath = txtPath.getText();
         Database.setDatabasePath(databasePath);
+        this.password = passphrase.getText();
+        if (this.password.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+            alert.setHeaderText("Please enter your secret passphrase!");
+            alert.showAndWait();
+            return;
+        }
+        DBEncTools.setPassword(this.password);
+        DBEncTools dbEncTools = new DBEncTools();
+        File dbFile = new File(databasePath);
+        if (dbFile.exists() == true){
+            if (dbEncTools.checkAuth() == true){
+                dbEncTools.decryptDatabase();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+                alert.setHeaderText("You entered the wrong passphrase!");
+                alert.showAndWait();
+                this.passphrase.setText("");
+                return;
+            }
+        }
+        
         // hide input fields
         passphrase.setVisible(false);
         unlock.setVisible(false);
@@ -171,6 +200,16 @@ public class LoginController implements Initializable {
             System.out.println("User cancelled.");
         }
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
 
     }
     

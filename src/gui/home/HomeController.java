@@ -32,8 +32,11 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import encNotes.database.Database;
+import encNotes.encryption.DBEncTools;
 import encNotes.note.Note;
 import encNotes.notebook.Notebook;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.web.HTMLEditor;
 
 /**
@@ -103,6 +106,7 @@ public class HomeController implements Initializable {
         root.setGraphic(rootIcon);
         this.nodeName="";
         this.database = new Database();
+        this.database.insertCheckValue();
         txtDate.setText(this.database.getCurrentDateTimeGui());
         notebooksTreeView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<TreeItem>(){
              @Override
@@ -231,23 +235,32 @@ public class HomeController implements Initializable {
     
     @FXML
     public void btnDeleteClicked(ActionEvent e){
-        this.database.deleteNotebook(nodeName);
-        this.database.deleteNote(nodeName);
-        this.database.deleteNotesTags(nodeName);
         
-        for (TreeItem<String> ti : root.getChildren()){
-            System.out.println(ti.getValue());
-            System.out.println(nodeName);
-            if (ti.getValue().equals(nodeName)){
-                root.getChildren().remove(ti);
-            }else{
-                for (TreeItem<String> tj : ti.getChildren()){
-                   if (tj.getValue().equals(nodeName)){
-                       ti.getChildren().remove(tj);
-                   }
-                }
+        
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            alert.setHeaderText("Are you sure?");
+            alert.setTitle("Confirmation");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                 this.database.deleteNotebook(nodeName);
+                    this.database.deleteNote(nodeName);
+                    this.database.deleteNotesTags(nodeName);
+
+                    for (TreeItem<String> ti : root.getChildren()){
+                        System.out.println(ti.getValue());
+                        System.out.println(nodeName);
+                        if (ti.getValue().equals(nodeName)){
+                            root.getChildren().remove(ti);
+                        }else{
+                            for (TreeItem<String> tj : ti.getChildren()){
+                               if (tj.getValue().equals(nodeName)){
+                                   ti.getChildren().remove(tj);
+                               }
+                            }
+                        }
+                    }
             }
-        }
+
     }
     
     public void unsetControls(){

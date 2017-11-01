@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import encNotes.note.Note;
 import encNotes.notebook.Notebook;
-import org.sqlite.JDBC;
+import org.sqlite.*;
 /**
  *
  * @author mwlltr
@@ -740,7 +740,7 @@ public class Database {
             }
             
             
-            //this.closeConnection();
+            this.closeConnection();
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -771,10 +771,134 @@ public class Database {
             }
             
             
-            //this.closeConnection();
+            this.closeConnection();
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    
+    public ArrayList<String> getAllTableNames(){
+        
+        ArrayList<String> tableNames = new ArrayList<String>();
+        
+        ResultSet rs = null;
+        
+        try {
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            String sql = String.format("SELECT name FROM sqlite_master WHERE type='table';");
+            rs = this.statement.executeQuery(sql);
+            String name="";
+            while (rs.next()){
+                name=rs.getString("name");
+                tableNames.add(name);
+            }
+            this.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return tableNames;
+        
+    }
+    
+    public ArrayList<String> getAllColumnNames(String tableName){
+       
+        
+        
+        ArrayList<String> columnNames = new ArrayList<String>();
+       
+        ResultSet rs = null;
+        
+        try {
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            String sql = String.format("PRAGMA table_info(%s);", tableName);
+            rs = this.statement.executeQuery(sql);
+            String name ="";
+            while (rs.next()){
+                name = rs.getString("name");
+                columnNames.add(name);
+            }
+            this.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+       return columnNames; 
+    }
+    
+        public ResultSet getAllData(String tableName){
+        
+        
+        ResultSet rs = null;
+        
+        try {
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            String sql = String.format("SELECT * from %s;", tableName);
+            rs = this.statement.executeQuery(sql);
+            //this.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return rs;
+        
+    }
+        
+        public void executeUpdate(String sql){
+            
+        try {
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            this.statement.executeUpdate(sql);
+            this.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        }
+        
+        public void insertCheckValue(){
+        try{
+            this.connectToDatabase();
+            this.statement = this.con.createStatement();
+            
+            String sql = "SELECT * from checkPassword;";
+            ResultSet result = this.statement.executeQuery(sql);
+            if (!result.isBeforeFirst()){
+                sql = "INSERT INTO checkPassword (name) VALUES ('ThIsIsMy1337UniQue<>//checkValue,.-!');";
+            }
+            this.statement.executeUpdate(sql);
+            this.closeConnection();
+        } catch (Exception e) {
+           System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+           System.exit(0);
+        }
+    }
+        
+         public String getCheckValue(){
+            String name = "";
+            try{
+                this.connectToDatabase();
+                this.statement = this.con.createStatement();
+
+                String sql = "SELECT * from checkPassword;";
+
+                ResultSet result = this.statement.executeQuery(sql);
+
+                while(result.next()){
+                    name = result.getString("name");
+                }
+                this.closeConnection();
+            } catch (Exception e) {
+               System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+               System.exit(0);
+            }
+        return name;
+    }
 }
