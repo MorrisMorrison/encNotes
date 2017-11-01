@@ -8,12 +8,14 @@ package gui.settings;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXToggleButton;
+import encNotes.encryption.DBEncTools;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -77,6 +83,18 @@ public class SettingsController implements Initializable {
     
     @FXML
     public void saveClicked(ActionEvent e){
+        String newPassphrase = passphrase.getText();
+        String confirmPassphrase = confirm.getText();
+        if (newPassphrase.equals(confirmPassphrase)){
+            Alert alert = new Alert(AlertType.CONFIRMATION, "", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            alert.setHeaderText("Are you sure?");
+            alert.setTitle("Confirmation");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                DBEncTools.setPassword(newPassphrase);
+            }
+            
+        }
         
     }
     
