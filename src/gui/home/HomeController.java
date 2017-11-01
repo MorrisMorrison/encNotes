@@ -191,7 +191,7 @@ public class HomeController implements Initializable {
         notebook.setGraphic(notebookIcon);
         root.getChildren().add(notebook);
         txtAdd.setText("");
-        status.setText("Workbook " + workbookName + " added.");
+        status.setText("Notebook " + workbookName + " added.");
     }
     
     @FXML
@@ -222,7 +222,7 @@ public class HomeController implements Initializable {
             System.out.println(t);
             this.database.addNotesTag(noteName, t, notebookName);
         }
-        
+        status.setText("Note " + noteName + " added.");
         unsetControls();
         
        
