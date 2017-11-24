@@ -45,6 +45,7 @@ public class EncNotes extends Application {
         
         stage.setIconified(false);
         stage.show();
+
     }
 
     
@@ -55,5 +56,4 @@ public class EncNotes extends Application {
         launch(args);
     }
 
-    
 }

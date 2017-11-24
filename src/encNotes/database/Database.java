@@ -59,7 +59,7 @@ public class Database {
         try{
             Class.forName("org.sqlite.JDBC");
             String connectionString = "jdbc:sqlite:" + databasePath;
-             this.con = DriverManager.getConnection(connectionString);
+            this.con = DriverManager.getConnection(connectionString);
         }catch(Exception e){
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
