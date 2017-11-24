@@ -33,13 +33,12 @@ public class TagDAO {
     
     public int insert(Tag tag){
         // id, name, notebook_id, content, created, last_changed
-        String sql ="INSERT into tags VALUES(?,?)";
+        String sql ="INSERT into tags(name) VALUES(?)";
         PreparedStatement pstmnt;
         int rows = 0;
         try {
             pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
-            pstmnt.setInt(1, tag.getId());
-            pstmnt.setString(2, tag.getName());
+            pstmnt.setString(1, tag.getName());
 
             rows = pstmnt.executeUpdate();
             
@@ -66,20 +65,8 @@ public class TagDAO {
             int id = rs.getInt("id");
             String name = rs.getString("name");
             
-            sql = "SELECT * FROM notesTags WHERE id = ?";
-            pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
-            pstmnt.setInt(1, tag_id);
             
-            rs = pstmnt.executeQuery();
-            NoteDAO noteDAO = new NoteDAO();
-            ArrayList<Note> notes = new ArrayList<Note>();
-            
-            while (rs.next()){
-                Note note = noteDAO.select(rs.getInt("note_id"));
-                notes.add(note);
-            }
-            
-            tag = new Tag(id, name, notes);
+            tag = new Tag(id, name);
             
             rs.close();
             pstmnt.close();
@@ -151,6 +138,57 @@ public class TagDAO {
         }
         
         return tags;
+    }
+    
+    public Collection<Tag> selectAll(int note_id){
+        String sql = "SELECT * from tags WHERE id = ?";
+        Tag tag = null;
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+        try {
+            PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            pstmnt.setInt(1, note_id);
+            ResultSet rs = pstmnt.executeQuery();
+           
+            while(rs.next()){
+                int id = rs.getInt("id");
+                tags.add(this.select(id));                
+            }
+            rs.close();
+            pstmnt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return tags;
+    }
+    
+    public void referenceNote(Note note, Tag tag){
+        String sql = "INSERT INTO notesTags(note_id, tag_id) VALUES(?,?)";
+          try {
+              PreparedStatement pstmnt = DatabaseUtils.getInstance().getConnection().prepareStatement(sql);
+              pstmnt.setInt(1, note.getId());
+              pstmnt.setInt(2, tag.getId());
+              pstmnt.execute();
+              pstmnt.close();
+          } catch (SQLException ex) {
+              Logger.getLogger(TagDAO.class.getName()).log(Level.SEVERE, null, ex);
+          }
+    }
+    
+    public void unreferenceNote(Note note, Tag tag){
+        String sql = "DELETE FROM notesTags WHERE note_id = ? AND tag_id = ?";
+          try {
+              PreparedStatement pstmnt = DatabaseUtils.getInstance().getConnection().prepareStatement(sql);
+              pstmnt.setInt(1, note.getId());
+              pstmnt.setInt(2, tag.getId());
+              
+              pstmnt.executeUpdate();
+              
+              pstmnt.close();
+              
+          } catch (SQLException ex) {
+              Logger.getLogger(TagDAO.class.getName()).log(Level.SEVERE, null, ex);
+          }
     }
     
     

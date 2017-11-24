@@ -8,6 +8,7 @@ package encNotes.dao;
 import encNotes.pojos.Note;
 import encNotes.database.DatabaseUtils;
 import encNotes.pojos.Notebook;
+import encNotes.pojos.Tag;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,18 +36,24 @@ public class NoteDAO{
     
     public int insert(Note note){
         // id, name, notebook_id, content, created, last_changed
-        String sql ="INSERT into notes VALUES(?,?,?,?,?,?)";
+        String sql ="INSERT into notes (name, notebook_id, content, created,last_changed) VALUES(?,?,?,?,?)";
         PreparedStatement pstmnt;
         int rows = 0;
         try {
             pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
-            pstmnt.setInt(1, note.getId());
-            pstmnt.setString(2, note.getName());
-            pstmnt.setInt(3, note.getNotebook().getId());
-            pstmnt.setString(4, note.getCreated().toString());
-            pstmnt.setString(5, note.getLast_changed().toString());
+            pstmnt.setString(1, note.getName());
+            pstmnt.setInt(2, note.getNotebook().getId());
+            pstmnt.setString(3, note.getCreated().toString());
+            pstmnt.setString(4, note.getLast_changed().toString());
             
             rows = pstmnt.executeUpdate();
+            
+            TagDAO tagDAO = new TagDAO();
+            for(Tag tag : note.getTags()){
+                tagDAO.referenceNote(note, tag);
+            }
+            
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,7 +85,10 @@ public class NoteDAO{
             NotebookDAO notebookBean = new NotebookDAO();
             Notebook notebook = notebookBean.select(notebook_id);
             
-            note = new Note(id, name, notebook, content, created, last_changed);
+            TagDAO tagDAO = new TagDAO();
+            ArrayList<Tag> tags = (ArrayList<Tag>) tagDAO.selectAll(id);
+            
+            note = new Note(id, name, notebook, content, created, last_changed, tags);
             rs.close();
             pstmnt.close();
         } catch (SQLException ex) {
@@ -117,12 +127,21 @@ public class NoteDAO{
     }
     
     public boolean delete(int note_id){
+        TagDAO tagDAO = new TagDAO();
+        for (Tag tag : this.select(note_id).getTags()){
+           tagDAO.unreferenceNote(this.select(note_id), tag);
+        }
+        
+        
         String sql = "DELETE FROM notes WHERE id = ?";
         int rows = 0;
         try {
             PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
             pstmnt.setInt(1, note_id);
             rows = pstmnt.executeUpdate();
+            
+            
+            
         } catch (SQLException ex) {
             Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -151,7 +170,10 @@ public class NoteDAO{
                 LocalDateTime created = rs.getTimestamp("created").toLocalDateTime();
                 LocalDateTime last_changed = rs.getTimestamp("last_changed").toLocalDateTime();
                 Notebook notebook = notebookBean.select(notebook_id);
-                note = new Note(id, name, notebook, content, created, last_changed);
+                TagDAO tagDAO = new TagDAO();
+                ArrayList<Tag> tags = (ArrayList<Tag>) tagDAO.selectAll(id);
+                
+                note = new Note(id, name, notebook, content, created, last_changed, tags);
                 notes.add(note);
             }
             

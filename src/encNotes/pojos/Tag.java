@@ -14,12 +14,10 @@ import java.util.Collection;
 public class Tag {
     private int id;
     private String name;
-    private Collection<Note> notes;
 
-    public Tag(int id, String name, Collection<Note> notes) {
+    public Tag(int id, String name) {
         this.id = id;
         this.name = name;
-        this.notes = notes;
     }
 
     public int getId() {
@@ -38,13 +36,6 @@ public class Tag {
         this.name = name;
     }
 
-    public Collection<Note> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(Collection<Note> notes) {
-        this.notes = notes;
-    }
     
     
     

@@ -33,13 +33,13 @@ class NotebookDAO {
     
     public int insert(Notebook notebook){
         // id, name, notebook_id, content, created, last_changed
-        String sql ="INSERT into notebooks VALUES(?,?)";
+        String sql ="INSERT into notebooks(name) VALUES(?)";
         PreparedStatement pstmnt;
         int rows = 0;
         try {
             pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
-            pstmnt.setInt(1, notebook.getId());
-            pstmnt.setString(2, notebook.getName());
+            
+            pstmnt.setString(1, notebook.getName());
 
             
             rows = pstmnt.executeUpdate();
