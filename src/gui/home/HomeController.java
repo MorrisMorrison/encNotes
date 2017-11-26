@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
+import encNotes.dao.DatabaseDAO;
 import encNotes.dao.NoteDAO;
 import encNotes.dao.NotebookDAO;
 import java.io.File;
@@ -33,7 +34,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import encNotes.database.Database;
 import encNotes.encryption.DBEncTools;
 import encNotes.pojos.Note;
 import encNotes.pojos.Notebook;
@@ -88,7 +88,6 @@ public class HomeController implements Initializable {
     
     //private final 
     
-    Database database;
     String nodeName;
     /**
      * Initializes the controller class.
@@ -111,9 +110,10 @@ public class HomeController implements Initializable {
         root.setValue("Notebooks");
         root.setGraphic(rootIcon);
         this.nodeName="";
-        this.database = new Database();
-        this.database.insertCheckValue();
-        txtDate.setText(this.database.getCurrentDateTimeGui());
+        //this.database = new Database();
+        //this.database.insertCheckValue();
+        
+        txtDate.setText(TimeUtils.getCurrentDate());
         notebooksTreeView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<TreeItem>(){
              @Override
              public void onChanged(ListChangeListener.Change<? extends TreeItem> c) {
@@ -124,7 +124,7 @@ public class HomeController implements Initializable {
                      txtNotename.setText("");
                      txtContent.setHtmlText("");
                      txtTags.setText("");
-                     txtDate.setText(database.getCurrentDateTimeGui());
+                     txtDate.setText(TimeUtils.getCurrentDate());
                  }else{
                  ArrayList<Tag> tags = (ArrayList<Tag>) note.getTags();
                  String tag_str ="";
@@ -147,7 +147,7 @@ public class HomeController implements Initializable {
         });
         
         NotebookDAO notebookDAO = new NotebookDAO();
-        ArrayList<Notebook> notebooks = (ArrayList) notebookDAO.selectAll();
+        ArrayList<Notebook> notebooks = (ArrayList) notebookDAO.selectAll(true);
         for(Notebook notebook: notebooks){
             TreeItem<String> notebookTreeItem = new TreeItem<String>();
             notebookTreeItem.setValue(notebook.getName());
@@ -159,7 +159,7 @@ public class HomeController implements Initializable {
             root.getChildren().add(notebookTreeItem);
             
             NoteDAO noteDAO = new NoteDAO();
-            ArrayList<Note> notes =(ArrayList) noteDAO.selectAll(notebook);
+            ArrayList<Note> notes =(ArrayList) noteDAO.selectAll(notebook, true);
             for (Note note : notes){
                 
                 for (TreeItem<String> ti : root.getChildren()){
@@ -186,7 +186,7 @@ public class HomeController implements Initializable {
         String notebookName = txtAdd.getText();
         System.out.println(notebookName);
         
-        Notebook notebook = new Notebook(notebookName);
+        Notebook notebook = new Notebook(notebookName, true);
         
         NotebookDAO notebookDAO = new NotebookDAO();
         notebookDAO.insert(notebook);
@@ -235,7 +235,7 @@ public class HomeController implements Initializable {
         
         
         if (note == null){
-            note = new Note(noteName, notebook, content, TimeUtils.getNow(), TimeUtils.getNow(), tags);
+            note = new Note(noteName, notebook, content, TimeUtils.getNow(), TimeUtils.getNow(), tags, true);
             noteDAO.insert(note);
         }else{
             note.setContent(content);
@@ -267,10 +267,16 @@ public class HomeController implements Initializable {
             if (alert.getResult() == ButtonType.YES) {
                     
                     NotebookDAO notebookDAO = new NotebookDAO();
-                    if (notebookDAO.select(nodeName) == null){
-                        new NoteDAO().delete(nodeName);
+                    Notebook notebook = notebookDAO.select(nodeName);
+                    if (notebook == null){
+                        //new NoteDAO().delete(nodeName);
+                        NoteDAO noteDAO = new NoteDAO();
+                        Note note = noteDAO.select(nodeName);
+                        note.setActive(false);
+                        noteDAO.update(note);
                     }else{
-                        notebookDAO.delete(nodeName);
+                        notebook.setActive(false);
+                        notebookDAO.update(notebook);
                     }
                     
                     

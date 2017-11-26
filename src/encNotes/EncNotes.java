@@ -6,6 +6,8 @@
 package encNotes;
 
 import com.jfoenix.controls.JFXDecorator;
+import encNotes.dao.DatabaseDAO;
+import encNotes.dbsetup.DatabaseSetup;
 import gui.routes.Routes;
 import java.io.IOException;
 import javafx.application.Application;
@@ -19,7 +21,6 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import encNotes.database.Database;
 
 /**
  *
@@ -29,6 +30,7 @@ public class EncNotes extends Application {
     
     @Override
     public void start(Stage stage) throws IOException {
+        
         
         Parent root = FXMLLoader.load(getClass().getResource(Routes.LOGINVIEW));
         

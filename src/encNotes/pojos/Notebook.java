@@ -12,14 +12,17 @@ package encNotes.pojos;
 public class Notebook {
     private int id;
     private String name;
-
-    public Notebook(int id, String name) {
+    private boolean active;
+    
+    public Notebook(int id, String name, boolean active) {
         this.id = id;
         this.name = name;
+        this.active = active;
     }
 
-    public Notebook(String notebookName) {
+    public Notebook(String notebookName, boolean active) {
         this.name = notebookName;
+        this.active = active;
     }
 
     
@@ -39,6 +42,15 @@ public class Notebook {
     public void setName(String name) {
         this.name = name;
     }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
     
     
 }

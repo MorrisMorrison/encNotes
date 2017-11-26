@@ -20,8 +20,9 @@ public class Note {
     String created;
     String lastChanged;
     ArrayList<String> tags;
+    boolean active;
     
-    public Note(int id, String name, String content, String notebookName, String created, String lastChanged, ArrayList<String> tags){
+    public Note(int id, String name, String content, String notebookName, String created, String lastChanged, ArrayList<String> tags, boolean active){
         this.id = id;
         this.name = name;
         this.content = content;
@@ -29,15 +30,17 @@ public class Note {
         this.created = created;
         this.lastChanged=lastChanged;
         this.tags = tags;
+        this.active = active;
     }
     
-     public Note(String name, String content, String notebookName, String created, String lastChanged, ArrayList<String> tags){
+     public Note(String name, String content, String notebookName, String created, String lastChanged, ArrayList<String> tags, boolean active){
         this.name = name;
         this.content = content;
         this.notebookName = notebookName;
         this.created = created;
         this.lastChanged=lastChanged;
         this.tags = tags;
+        this.active = active;
     }
     
     
@@ -111,6 +114,14 @@ public class Note {
     @Override
     public String toString() {
         return "Note{" + "id=" + id + ", name=" + name + ", content=" + content + ", notebookName=" + notebookName + ", created=" + created + ", lastChanged=" + lastChanged + ", tags=" + tags + '}';
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
     
     

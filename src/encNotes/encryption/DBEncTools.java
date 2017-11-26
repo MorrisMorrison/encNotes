@@ -5,7 +5,7 @@
  */
 package encNotes.encryption;
 
-import encNotes.database.Database;
+import encNotes.dao.DatabaseDAO;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,9 +48,10 @@ public class DBEncTools {
     
     public void encryptDatabase(){
         // create new db object
-        Database database = new Database();
+        //Database database = new Database();
         // get all tableNames
-        ArrayList<String> tableNames = database.getAllTableNames();
+        DatabaseDAO databaseDAO = new DatabaseDAO();
+        ArrayList<String> tableNames = databaseDAO.getAllTableNames();
         SecretKeySpec secretKey = AES.createSecretKey(this.password);
         ArrayList<String> sqlStrings = new ArrayList<String>();
         // for every table fetch all data
@@ -58,8 +59,8 @@ public class DBEncTools {
             if (!(tableName.equals("sqlite_sequence"))){
                 try {
                     System.out.println("Tablename: " + tableName);
-                    ArrayList<String> columnNames = database.getAllColumnNames(tableName);
-                    ResultSet data = database.getAllData(tableName);
+                    ArrayList<String> columnNames = databaseDAO.getAllColumnNames(tableName);
+                    ResultSet data = databaseDAO.getAllData(tableName);
                     System.out.println("Data: " + data);
                     // get all column names of table
                     while (data.next()){
@@ -80,18 +81,18 @@ public class DBEncTools {
             }
         }
         
-        database.closeConnection();
         for (String sqlString : sqlStrings){
-            database.executeUpdate(sqlString);
+            databaseDAO.executeUpdate(sqlString);
         }
         
     }
     
     public void decryptDatabase(){
           // create new db object
-        Database database = new Database();
+        //Database database = new Database();
+        DatabaseDAO databaseDAO = new DatabaseDAO();
         // get all tableNames
-        ArrayList<String> tableNames = database.getAllTableNames();
+        ArrayList<String> tableNames = databaseDAO.getAllTableNames();
         SecretKeySpec secretKey = AES.createSecretKey(this.password);
         ArrayList<String> sqlStrings = new ArrayList<String>();
         // for every table fetch all data
@@ -99,8 +100,8 @@ public class DBEncTools {
             if (!(tableName.equals("sqlite_sequence"))){
                 try {
                     System.out.println("Tablename: " + tableName);
-                    ArrayList<String> columnNames = database.getAllColumnNames(tableName);
-                    ResultSet data = database.getAllData(tableName);
+                    ArrayList<String> columnNames = databaseDAO.getAllColumnNames(tableName);
+                    ResultSet data = databaseDAO.getAllData(tableName);
                     System.out.println("Data: " + data);
                     // get all column names of table
                     while (data.next()){
@@ -121,17 +122,16 @@ public class DBEncTools {
             }
         }
         
-        database.closeConnection();
         for (String sqlString : sqlStrings){
-            database.executeUpdate(sqlString);
+            databaseDAO.executeUpdate(sqlString);
         }
         
         
     }
     
     public boolean checkAuth(){
-        Database database = new Database();
-        String checkValue = database.getCheckValue();
+
+        String checkValue = new DatabaseDAO().getCheckValue();
         SecretKeySpec secretKey = AES.createSecretKey(this.password);
         if (AES.encrypt("ThIsIsMy1337UniQue<>//checkValue,.-!", secretKey).equals(checkValue)){
             return true;

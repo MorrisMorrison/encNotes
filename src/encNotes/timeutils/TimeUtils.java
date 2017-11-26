@@ -35,4 +35,10 @@ public class TimeUtils {
         LocalDateTime time = LocalDateTime.now();
         return time;
     }
+    
+    public static String getCurrentDate(){
+        LocalDateTime time = LocalDateTime.now();
+        String timeAsString = time.getDayOfMonth() + "." + time.getMonthValue() + "." + time.getYear();
+        return timeAsString;
+    }
 }

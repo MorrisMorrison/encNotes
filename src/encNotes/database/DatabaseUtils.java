@@ -55,6 +55,14 @@ public class DatabaseUtils {
     public static DatabaseUtils getInstance(){
         return dbUtils;
     }
+
+    public static String getDB_NAME() {
+        return DB_NAME;
+    }
+
+    public static void setDB_NAME(String DB_NAME) {
+        DatabaseUtils.DB_NAME = DB_NAME;
+    }
     
     
     

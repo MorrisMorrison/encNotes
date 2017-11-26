@@ -11,6 +11,8 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import encNotes.dao.DatabaseDAO;
+import encNotes.dbsetup.DatabaseSetup;
 import encNotes.encryption.DBEncTools;
 import gui.routes.Routes;
 import java.io.File;
@@ -71,6 +73,9 @@ public class MainViewController implements Initializable {
         ImageView imageView;
         File imageFile;
         
+        DatabaseSetup setup = new DatabaseSetup();
+        setup.start();
+        new DatabaseDAO().insertCheckValue();
 
         
         try {

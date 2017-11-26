@@ -10,7 +10,8 @@ import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
-import encNotes.database.Database;
+import encNotes.database.DatabaseUtils;
+import encNotes.dbsetup.DatabaseSetup;
 import encNotes.encryption.AES;
 import encNotes.encryption.DBEncTools;
 import gui.encNotes.MainViewController;
@@ -79,6 +80,9 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
+        
+        
         File imageFile;
         File database = new File("encNotes.db");
         String path = database.getAbsolutePath();
@@ -97,7 +101,7 @@ public class LoginController implements Initializable {
     @FXML
     private void btnUnlockClicked(ActionEvent event) throws IOException {
         String databasePath = txtPath.getText();
-        Database.setDatabasePath(databasePath);
+        
         this.password = passphrase.getText();
         if (this.password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
@@ -119,7 +123,7 @@ public class LoginController implements Initializable {
                 return;
             }
         }
-        
+        DatabaseUtils.setDB_NAME(databasePath);
         // hide input fields
         passphrase.setVisible(false);
         unlock.setVisible(false);
@@ -143,6 +147,7 @@ public class LoginController implements Initializable {
             try {
                 
                 // create mainview as parent root
+                
                 
                 root = FXMLLoader.load(getClass().getResource(Routes.MAINVIEW));
                 

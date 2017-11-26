@@ -20,8 +20,9 @@ public class Note {
     private LocalDateTime created;
     private LocalDateTime last_changed;
     private Collection<Tag> tags;
+    private boolean active;
 
-    public Note(int id, String name, Notebook notebook, String content, LocalDateTime created, LocalDateTime last_changed, Collection<Tag> tags) {
+    public Note(int id, String name, Notebook notebook, String content, LocalDateTime created, LocalDateTime last_changed, Collection<Tag> tags, boolean actibe) {
         this.id = id;
         this.name = name;
         this.notebook = notebook;
@@ -29,15 +30,17 @@ public class Note {
         this.created = created;
         this.last_changed = last_changed;
         this.tags = tags;
+        this.active = active;
     }
 
-    public Note(String name, Notebook notebook, String content, LocalDateTime created, LocalDateTime last_changed, Collection<Tag> tags) {
+    public Note(String name, Notebook notebook, String content, LocalDateTime created, LocalDateTime last_changed, Collection<Tag> tags, boolean active) {
         this.name = name;
         this.notebook = notebook;
         this.content = content;
         this.created = created;
         this.last_changed = last_changed;
         this.tags = tags;
+        this.active = active;
     }
     
     
@@ -98,7 +101,15 @@ public class Note {
         this.tags = tags;
     }
 
+    public boolean getActive() {
+        return active;
+    }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    
     
     
     

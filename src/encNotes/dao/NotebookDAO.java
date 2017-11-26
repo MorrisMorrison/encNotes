@@ -33,13 +33,13 @@ public class NotebookDAO {
     
     public int insert(Notebook notebook){
         // id, name, notebook_id, content, created, last_changed
-        String sql ="INSERT INTO notebooks(name) VALUES(?)";
+        String sql ="INSERT INTO notebooks(name, active) VALUES(?, ?)";
         PreparedStatement pstmnt;
         int rows = 0;
         try {
             pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
             pstmnt.setString(1, notebook.getName());
-
+            pstmnt.setBoolean(2, notebook.getActive());
             
             rows = pstmnt.executeUpdate();
             
@@ -64,11 +64,14 @@ public class NotebookDAO {
             pstmnt.setInt(1, notebook_id);
             ResultSet rs = pstmnt.executeQuery();
 
-            rs.next();
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
             
-            notebook = new Notebook(id, name);
+            
+            while (rs.next()){
+                 int id = rs.getInt("id");
+                String name = rs.getString("name");
+                boolean active = rs.getBoolean("active");
+                notebook = new Notebook(id, name, active);
+            }
             rs.close();
             pstmnt.close();
         } catch (SQLException ex) {
@@ -88,7 +91,8 @@ public class NotebookDAO {
             while (rs.next()){
                  int id = rs.getInt("id");
                 String name = rs.getString("name");
-                notebook = new Notebook(id, name);
+                boolean active = rs.getBoolean("active");
+                notebook = new Notebook(id, name, active);
             }
            
             
@@ -103,13 +107,14 @@ public class NotebookDAO {
     }
     
     public boolean update(Notebook notebook){
-        String sql = "UPDATE notebooks SET name=? WHERE id =?";
+        String sql = "UPDATE notebooks SET name=?, active =? WHERE id =?";
         int rows = 0;
         try {
             PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
             
             pstmnt.setString(1, notebook.getName());
-            pstmnt.setInt(2, notebook.getId());
+            pstmnt.setBoolean(2, notebook.getActive());
+            pstmnt.setInt(3, notebook.getId());
 
             
             rows = pstmnt.executeUpdate();
@@ -188,6 +193,27 @@ public class NotebookDAO {
         ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
         try {
             PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            ResultSet rs = pstmnt.executeQuery();
+           
+            while(rs.next()){
+                int id = rs.getInt("id");
+                notebooks.add(this.select(id));                
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return notebooks;
+    }
+    
+    public Collection<Notebook> selectAll(boolean active){
+        String sql = "SELECT * from notebooks WHERE active = ?";
+        Note note = null;
+        ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
+        try {
+            PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            pstmnt.setBoolean(1, active);
             ResultSet rs = pstmnt.executeQuery();
            
             while(rs.next()){

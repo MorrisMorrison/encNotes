@@ -36,7 +36,7 @@ public class NoteDAO{
     
     public int insert(Note note){
         // id, name, notebook_id, content, created, last_changed
-        String sql ="INSERT INTO notes(name, content, notebook_id, created, last_changed) VALUES(?,?,?,?,?)";
+        String sql ="INSERT INTO notes(name, content, notebook_id, created, last_changed, active) VALUES(?,?,?,?,?,?)";
         PreparedStatement pstmnt;
         int rows = 0;
         try {
@@ -46,6 +46,7 @@ public class NoteDAO{
             pstmnt.setInt(3, note.getNotebook().getId());
             pstmnt.setString(4, note.getCreated().toString());
             pstmnt.setString(5, note.getLast_changed().toString());
+            pstmnt.setBoolean(6, note.getActive());
             
             rows = pstmnt.executeUpdate();
             
@@ -84,21 +85,23 @@ public class NoteDAO{
             int notebook_id;
             LocalDateTime created;
             LocalDateTime last_changed;
+            boolean active;
             
             while (rs.next()){
                 id = rs.getInt("id");
                 name = rs.getString("name");
                 content = rs.getString("content");
                 notebook_id = rs.getInt("notebook_id");
-                created = rs.getTimestamp("created").toLocalDateTime();
-                last_changed = rs.getTimestamp("last_changed").toLocalDateTime();
+                created = LocalDateTime.parse(rs.getString("created"));
+                last_changed = LocalDateTime.parse(rs.getString("last_changed"));
                 NotebookDAO notebookBean = new NotebookDAO();
                 Notebook notebook = notebookBean.select(notebook_id);
+                active = rs.getBoolean("active");
 
                 TagDAO tagDAO = new TagDAO();
                 ArrayList<Tag> tags = (ArrayList<Tag>) tagDAO.selectAll(id);
 
-                note = new Note(id, name, notebook, content, created, last_changed, tags);
+                note = new Note(id, name, notebook, content, created, last_changed, tags, active);
             }
             
             
@@ -126,6 +129,7 @@ public class NoteDAO{
             int notebook_id;
             LocalDateTime created;
             LocalDateTime last_changed;
+            boolean active;
             
             while (rs.next()){
                 id = rs.getInt("id");
@@ -136,11 +140,12 @@ public class NoteDAO{
                 last_changed = LocalDateTime.parse(rs.getString("last_changed"));
                 NotebookDAO notebookBean = new NotebookDAO();
                 Notebook notebook = notebookBean.select(notebook_id);
-
+                active = rs.getBoolean("active");
+                
                 TagDAO tagDAO = new TagDAO();
                 ArrayList<Tag> tags = (ArrayList<Tag>) tagDAO.selectAll(id);
 
-                note = new Note(id, name, notebook, content, created, last_changed, tags);
+                note = new Note(id, name, notebook, content, created, last_changed, tags, active);
             }
             
             
@@ -155,18 +160,18 @@ public class NoteDAO{
     }
     
     public boolean update(Note note){
-        String sql = "UPDATE notes SET name=?, notebook_id =?, content = ?, created=?, last_changed =? WHERE id = ?";
+        String sql = "UPDATE notes SET name=?, content = ?,  notebook_id =?, created=?, last_changed =?, active = ? WHERE id = ?";
         int rows = 0;
         try {
             PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
             
             pstmnt.setString(1, note.getName());
-            pstmnt.setInt(2, note.getNotebook().getId());
-            pstmnt.setString(3, note.getContent());
+            pstmnt.setInt(3, note.getNotebook().getId());
+            pstmnt.setString(2, note.getContent());
             pstmnt.setString(4, note.getCreated().toString());
             pstmnt.setString(5, note.getLast_changed().toString());
-            
-            pstmnt.setInt(6, note.getId());
+            pstmnt.setBoolean(6, note.getActive());
+            pstmnt.setInt(7, note.getId());
             
             rows = pstmnt.executeUpdate();
             
@@ -284,6 +289,48 @@ public class NoteDAO{
         return notes;
     }
     
+    public Collection<Note> selectAll(boolean active){
+        String sql = "SELECT * from notes WHERE active = ?";
+        Note note = null;
+        ArrayList<Note> notes = new ArrayList<Note>();
+        try {
+            PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            pstmnt.setBoolean(1, active);
+            ResultSet rs = pstmnt.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+                notes.add(this.select(id));
+            }
+            pstmnt.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return notes;
+    }
+    
+    public Collection<Note> selectAll(Notebook notebook, boolean active){
+        String sql = "SELECT * from notes WHERE notebook_id = ? AND active = ?";
+        Note note = null;
+        ArrayList<Note> notes = new ArrayList<Note>();
+        try {
+            PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            pstmnt.setInt(1, notebook.getId());
+            pstmnt.setBoolean(2, active);
+            ResultSet rs = pstmnt.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
 
+                notes.add(this.select(id));
+            }
+            pstmnt.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return notes;
+    }
     
 }

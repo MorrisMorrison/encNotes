@@ -64,7 +64,8 @@ Statement statement;
                     " content  TEXT    NOT NULL," +
                     " notebook_id   INTEGER NOT NULL," +
                     " created   TEXT NOT NULL," +
-                    " last_changed   TEXT NOT NULL)"
+                    " last_changed   TEXT NOT NULL," +
+                    " active INTEGER NOT NULL)"
                     ; 
        
             this.statement.executeUpdate(sql);
@@ -82,7 +83,8 @@ Statement statement;
             this.statement = this.con.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS notebooks " +
                     "(id INTEGER PRIMARY KEY    AUTOINCREMENT," +
-                    " name  TEXT    NOT NULL    UNIQUE)"
+                    " name  TEXT    NOT NULL    UNIQUE," +
+                    " active INTEGER NOT NULL)"
                     ; 
             
             this.statement.executeUpdate(sql);
@@ -200,7 +202,7 @@ Statement statement;
         this.createTableNotebooks();
         this.createTableNotesTags();
         this.createTableTags();
-        this.createTableTrashNotes();
+        //this.createTableTrashNotes();
         this.createTableCheck();
         //this.createTableTrashNotebooks();
     }
