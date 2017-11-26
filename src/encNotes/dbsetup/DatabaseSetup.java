@@ -62,9 +62,9 @@ Statement statement;
                     "(id INTEGER PRIMARY KEY    AUTOINCREMENT," +
                     " name  TEXT    NOT NULL    UNIQUE," +
                     " content  TEXT    NOT NULL," +
-                    " notebook   TEXT NOT NULL," +
+                    " notebook_id   INTEGER NOT NULL," +
                     " created   TEXT NOT NULL," +
-                    " lastChanged   TEXT NOT NULL)"
+                    " last_changed   TEXT NOT NULL)"
                     ; 
        
             this.statement.executeUpdate(sql);
@@ -82,10 +82,7 @@ Statement statement;
             this.statement = this.con.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS notebooks " +
                     "(id INTEGER PRIMARY KEY    AUTOINCREMENT," +
-                    " name  TEXT    NOT NULL    UNIQUE," +
-                    " parent  TEXT    NOT NULL," +
-                    " created   TEXT NOT NULL," +
-                    " lastChanged   TEXT NOT NULL)"
+                    " name  TEXT    NOT NULL    UNIQUE)"
                     ; 
             
             this.statement.executeUpdate(sql);
@@ -103,8 +100,8 @@ Statement statement;
             this.statement = this.con.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS notesTags " +
                     "(id INTEGER PRIMARY KEY    AUTOINCREMENT," +
-                    " noteName  TEXT    NOT NULL," +
-                    " tagName  TEXT    NOT NULL);"
+                    " note_id  INTEGER    NOT NULL," +
+                    " tag_id  INTEGER    NOT NULL);"
                     ; 
             
             this.statement.executeUpdate(sql);
@@ -145,7 +142,7 @@ Statement statement;
                     " content  TEXT    NOT NULL," +
                     " notebook   TEXT NOT NULL," +
                     " created   TEXT NOT NULL," +
-                    " lastChanged   TEXT NOT NULL," +
+                    " last_changed   TEXT NOT NULL," +
                     " deleted   TEXT    NOT NULL);"
                     ; 
             

@@ -31,6 +31,17 @@ public class Note {
         this.tags = tags;
     }
 
+    public Note(String name, Notebook notebook, String content, LocalDateTime created, LocalDateTime last_changed, Collection<Tag> tags) {
+        this.name = name;
+        this.notebook = notebook;
+        this.content = content;
+        this.created = created;
+        this.last_changed = last_changed;
+        this.tags = tags;
+    }
+    
+    
+
     public int getId() {
         return id;
     }

@@ -45,9 +45,9 @@ public class Database {
     public Database(){
         DatabaseSetup setup = new DatabaseSetup();
         setup.start();
-        notebooks = new ArrayList<Notebook>();
-        this.initNotebooks();
-        this.initNotes();
+        //notebooks = new ArrayList<Notebook>();
+        //this.initNotebooks();
+        //this.initNotes();
     }
     
     

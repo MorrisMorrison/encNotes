@@ -9,6 +9,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
+import encNotes.dao.NoteDAO;
+import encNotes.dao.NotebookDAO;
 import java.io.File;
 import java.net.URL;
 import java.text.DateFormat;
@@ -33,11 +35,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import encNotes.database.Database;
 import encNotes.encryption.DBEncTools;
-import encNotes.note.Note;
-import encNotes.notebook.Notebook;
+import encNotes.pojos.Note;
+import encNotes.pojos.Notebook;
+import encNotes.pojos.Tag;
+import encNotes.timeutils.TimeUtils;
+import java.time.LocalDateTime;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.web.HTMLEditor;
+
 
 /**
  * FXML Database class
@@ -112,31 +118,26 @@ public class HomeController implements Initializable {
              @Override
              public void onChanged(ListChangeListener.Change<? extends TreeItem> c) {
                  nodeName = notebooksTreeView.getSelectionModel().getSelectedItem().getValue();
-                 Note note = database.getNote(nodeName);
-                 if (note.getName().isEmpty()){
+                 //Note note = database.getNote(nodeName);
+                 Note note = new NoteDAO().select(nodeName);
+                 if (note == null){
                      txtNotename.setText("");
                      txtContent.setHtmlText("");
                      txtTags.setText("");
                      txtDate.setText(database.getCurrentDateTimeGui());
                  }else{
-                 ArrayList<String> tags = note.getTags();
+                 ArrayList<Tag> tags = (ArrayList<Tag>) note.getTags();
                  String tag_str ="";
-                 for (String t : tags){
-                     tag_str+=t + ",";
+                 for (Tag tag : tags){
+                     tag_str+=tag.getName() + ",";
                  }
                  txtTags.setText(tag_str);
                  txtNotename.setText(note.getName());
                  txtContent.setHtmlText(note.getContent());
-                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.ssss");
-                 Date date;
-                     try {
-                         date = dateFormat.parse(note.getLastChanged());
-                         dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-                         String lastChanged = dateFormat.format(date);
-                         txtDate.setText(lastChanged);
-                     } catch (ParseException ex) {
-                         Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
-                     }
+                 LocalDateTime last_changed = note.getLast_changed();
+                 String date = last_changed.getDayOfMonth() + "." + last_changed.getMonthValue() + "." + last_changed.getYear();
+                 txtDate.setText(date);
+
                  
                  }
                  
@@ -145,8 +146,8 @@ public class HomeController implements Initializable {
         
         });
         
-
-        ArrayList<Notebook> notebooks = this.database.getNotebooks();
+        NotebookDAO notebookDAO = new NotebookDAO();
+        ArrayList<Notebook> notebooks = (ArrayList) notebookDAO.selectAll();
         for(Notebook notebook: notebooks){
             TreeItem<String> notebookTreeItem = new TreeItem<String>();
             notebookTreeItem.setValue(notebook.getName());
@@ -157,7 +158,8 @@ public class HomeController implements Initializable {
             
             root.getChildren().add(notebookTreeItem);
             
-            ArrayList<Note> notes = notebook.getNotes();
+            NoteDAO noteDAO = new NoteDAO();
+            ArrayList<Note> notes =(ArrayList) noteDAO.selectAll(notebook);
             for (Note note : notes){
                 
                 for (TreeItem<String> ti : root.getChildren()){
@@ -181,47 +183,68 @@ public class HomeController implements Initializable {
     @FXML
     public void btnAddClicked(ActionEvent e){
         
-        String workbookName = txtAdd.getText();
-        System.out.println(workbookName);
+        String notebookName = txtAdd.getText();
+        System.out.println(notebookName);
         
-        this.database.addNotebook(workbookName, "root");
-        TreeItem<String> notebook = new TreeItem<String>();
+        Notebook notebook = new Notebook(notebookName);
+        
+        NotebookDAO notebookDAO = new NotebookDAO();
+        notebookDAO.insert(notebook);
+        
+        
+        TreeItem<String> notebookTreeItem = new TreeItem<String>();
         Node notebookIcon =  new ImageView(new Image(getClass().getResourceAsStream("../images/icons8-Book Filled-16-orange.png")));
-        notebook.setValue(workbookName);
-        notebook.setGraphic(notebookIcon);
-        root.getChildren().add(notebook);
+        notebookTreeItem.setValue(notebookName);
+        notebookTreeItem.setGraphic(notebookIcon);
+        root.getChildren().add(notebookTreeItem);
         txtAdd.setText("");
-        status.setText("Notebook " + workbookName + " added.");
+        status.setText("Notebook " + notebookName + " added.");
     }
     
     @FXML
     public void btnSaveClicked(ActionEvent e){
         String noteName = txtNotename.getText();
         String tag = txtTags.getText();
-        ArrayList<String> tags = this.seperateTags(tag);
+        ArrayList<String> tagsAsString = this.seperateTags(tag);
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+        for (String t : tagsAsString){
+            tags.add(new Tag(t));
+        }
+        
         String content=txtContent.getHtmlText().toString();
         content = content.replaceAll("\'", "\"");
         String notebookName = getNodeName();
-        TreeItem<String> note = new TreeItem<String>();
+        TreeItem<String> noteTreeItem = new TreeItem<String>();
         Node noteIcon =  new ImageView(new Image(getClass().getResourceAsStream("../images/icons8-Page Filled-16.png")));
-        note.setValue(noteName);
-        note.setGraphic(noteIcon);
+        noteTreeItem.setValue(noteName);
+        noteTreeItem.setGraphic(noteIcon);
         
         for (TreeItem<String> ti : root.getChildren()){
             System.out.println(ti.getValue());
             System.out.println(notebookName);
             if (ti.getValue().equals(notebookName)){
-                ti.getChildren().add(note);
+                ti.getChildren().add(noteTreeItem);
             }
         }
         
-        this.database.addNote(noteName, content, notebookName);
+        //this.database.addNote(noteName, content, notebookName);
+        Notebook notebook = new NotebookDAO().select(notebookName);
+        NoteDAO noteDAO = new NoteDAO();
+        Note note = noteDAO.select(noteName);
         
         
-        for (String t : tags){
-            System.out.println(t);
-            this.database.addNotesTag(noteName, t, notebookName);
+        
+        if (note == null){
+            note = new Note(noteName, notebook, content, TimeUtils.getNow(), TimeUtils.getNow(), tags);
+            noteDAO.insert(note);
+        }else{
+            note.setContent(content);
+            note.setTags(tags);
+            note.setLast_changed(TimeUtils.getNow());
+            note.setName(noteName);
+            noteDAO.update(note);
         }
+        
         status.setText("Note " + noteName + " added.");
         unsetControls();
         
@@ -242,9 +265,18 @@ public class HomeController implements Initializable {
             alert.setTitle("Confirmation");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES) {
-                 this.database.deleteNotebook(nodeName);
-                    this.database.deleteNote(nodeName);
-                    this.database.deleteNotesTags(nodeName);
+                    
+                    NotebookDAO notebookDAO = new NotebookDAO();
+                    if (notebookDAO.select(nodeName) == null){
+                        new NoteDAO().delete(nodeName);
+                    }else{
+                        notebookDAO.delete(nodeName);
+                    }
+                    
+                    
+                    //this.database.deleteNotebook(nodeName);
+                    //this.database.deleteNote(nodeName);
+                    //this.database.deleteNotesTags(nodeName);
 
                     for (TreeItem<String> ti : root.getChildren()){
                         System.out.println(ti.getValue());

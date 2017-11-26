@@ -77,6 +77,29 @@ public class TagDAO {
         return tag;
     }
     
+    public Tag select(String tag_name){
+        String sql = "SELECT * from tags WHERE name = ?";
+        Tag tag = null;
+        try {
+            PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            pstmnt.setString(1, tag_name);
+            ResultSet rs = pstmnt.executeQuery();
+            
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                tag = new Tag(id, name);
+            }
+           
+            rs.close();
+            pstmnt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return tag;
+    }
+    
     public boolean update(Tag tag){
         String sql = "UPDATE tags SET name=? WHERE id =?";
         int rows = 0;
@@ -120,6 +143,9 @@ public class TagDAO {
         
     }
     
+    
+    // selects all existing tags
+    // also those ones without a note
     public Collection<Tag> selectAll(){
         String sql = "SELECT * from tags";
         Tag tag = null;
@@ -140,8 +166,9 @@ public class TagDAO {
         return tags;
     }
     
+    // selects all tags of a specific note by id
     public Collection<Tag> selectAll(int note_id){
-        String sql = "SELECT * from tags WHERE id = ?";
+        String sql = "SELECT * FROM notesTags WHERE note_id = ?";
         Tag tag = null;
         ArrayList<Tag> tags = new ArrayList<Tag>();
         try {
@@ -150,7 +177,7 @@ public class TagDAO {
             ResultSet rs = pstmnt.executeQuery();
            
             while(rs.next()){
-                int id = rs.getInt("id");
+                int id = rs.getInt("tag_id");
                 tags.add(this.select(id));                
             }
             rs.close();
@@ -163,12 +190,22 @@ public class TagDAO {
     }
     
     public void referenceNote(Note note, Tag tag){
+        if (this.select(tag.getName())==null){
+            this.insert(tag);
+        }
+        
+        tag = this.select(tag.getName());       
+        note = new NoteDAO().select(note.getName());
+        
         String sql = "INSERT INTO notesTags(note_id, tag_id) VALUES(?,?)";
           try {
               PreparedStatement pstmnt = DatabaseUtils.getInstance().getConnection().prepareStatement(sql);
               pstmnt.setInt(1, note.getId());
               pstmnt.setInt(2, tag.getId());
               pstmnt.execute();
+              
+              
+              
               pstmnt.close();
           } catch (SQLException ex) {
               Logger.getLogger(TagDAO.class.getName()).log(Level.SEVERE, null, ex);

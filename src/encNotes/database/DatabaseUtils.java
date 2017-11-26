@@ -31,10 +31,13 @@ public class DatabaseUtils {
             // initializes a connection
             // connection only gets created 1 time
             try {
+                Class.forName("org.sqlite.JDBC");
                 this.con = DriverManager.getConnection(URL);
             } catch (SQLException ex) {
                 Logger.getLogger(DatabaseUtils.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DatabaseUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public Connection getConnection(){

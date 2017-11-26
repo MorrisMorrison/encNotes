@@ -18,6 +18,10 @@ public class Notebook {
         this.name = name;
     }
 
+    public Notebook(String notebookName) {
+        this.name = notebookName;
+    }
+
     
     
     public int getId() {

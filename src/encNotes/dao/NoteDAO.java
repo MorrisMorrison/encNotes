@@ -36,17 +36,21 @@ public class NoteDAO{
     
     public int insert(Note note){
         // id, name, notebook_id, content, created, last_changed
-        String sql ="INSERT into notes (name, notebook_id, content, created,last_changed) VALUES(?,?,?,?,?)";
+        String sql ="INSERT INTO notes(name, content, notebook_id, created, last_changed) VALUES(?,?,?,?,?)";
         PreparedStatement pstmnt;
         int rows = 0;
         try {
             pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
             pstmnt.setString(1, note.getName());
-            pstmnt.setInt(2, note.getNotebook().getId());
-            pstmnt.setString(3, note.getCreated().toString());
-            pstmnt.setString(4, note.getLast_changed().toString());
+            pstmnt.setString(2, note.getContent());
+            pstmnt.setInt(3, note.getNotebook().getId());
+            pstmnt.setString(4, note.getCreated().toString());
+            pstmnt.setString(5, note.getLast_changed().toString());
             
             rows = pstmnt.executeUpdate();
+            
+            pstmnt.close();
+            //note = this.select(note.getName());
             
             TagDAO tagDAO = new TagDAO();
             for(Tag tag : note.getTags()){
@@ -73,22 +77,74 @@ public class NoteDAO{
             PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
             pstmnt.setInt(1, note_id);
             ResultSet rs = pstmnt.executeQuery();
+            
+            int id;
+            String name;
+            String content;
+            int notebook_id;
+            LocalDateTime created;
+            LocalDateTime last_changed;
+            
+            while (rs.next()){
+                id = rs.getInt("id");
+                name = rs.getString("name");
+                content = rs.getString("content");
+                notebook_id = rs.getInt("notebook_id");
+                created = rs.getTimestamp("created").toLocalDateTime();
+                last_changed = rs.getTimestamp("last_changed").toLocalDateTime();
+                NotebookDAO notebookBean = new NotebookDAO();
+                Notebook notebook = notebookBean.select(notebook_id);
 
-            rs.next();
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
-            String content = rs.getString("content");
-            int notebook_id = rs.getInt("notebook_id");
-            LocalDateTime created = rs.getTimestamp("created").toLocalDateTime();
-            LocalDateTime last_changed = rs.getTimestamp("last_changed").toLocalDateTime();
+                TagDAO tagDAO = new TagDAO();
+                ArrayList<Tag> tags = (ArrayList<Tag>) tagDAO.selectAll(id);
+
+                note = new Note(id, name, notebook, content, created, last_changed, tags);
+            }
             
-            NotebookDAO notebookBean = new NotebookDAO();
-            Notebook notebook = notebookBean.select(notebook_id);
             
-            TagDAO tagDAO = new TagDAO();
-            ArrayList<Tag> tags = (ArrayList<Tag>) tagDAO.selectAll(id);
             
-            note = new Note(id, name, notebook, content, created, last_changed, tags);
+            rs.close();
+            pstmnt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return note;
+    }
+    
+    public Note select(String note_name){
+        String sql = "SELECT * from notes WHERE name = ?";
+        Note note = null;
+        try {
+            PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            pstmnt.setString(1, note_name);
+            ResultSet rs = pstmnt.executeQuery();
+            
+            int id;
+            String name;
+            String content;
+            int notebook_id;
+            LocalDateTime created;
+            LocalDateTime last_changed;
+            
+            while (rs.next()){
+                id = rs.getInt("id");
+                name = rs.getString("name");
+                content = rs.getString("content");
+                notebook_id = rs.getInt("notebook_id");
+                created = LocalDateTime.parse(rs.getString("created"));
+                last_changed = LocalDateTime.parse(rs.getString("last_changed"));
+                NotebookDAO notebookBean = new NotebookDAO();
+                Notebook notebook = notebookBean.select(notebook_id);
+
+                TagDAO tagDAO = new TagDAO();
+                ArrayList<Tag> tags = (ArrayList<Tag>) tagDAO.selectAll(id);
+
+                note = new Note(id, name, notebook, content, created, last_changed, tags);
+            }
+            
+            
+            
             rs.close();
             pstmnt.close();
         } catch (SQLException ex) {
@@ -114,6 +170,7 @@ public class NoteDAO{
             
             rows = pstmnt.executeUpdate();
             
+            pstmnt.close();
         } catch (SQLException ex) {
             Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,7 +198,36 @@ public class NoteDAO{
             rows = pstmnt.executeUpdate();
             
             
+            pstmnt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if (rows > 0) {
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+    
+    public boolean delete(String note_name){
+        TagDAO tagDAO = new TagDAO();
+        Note note = this.select(note_name);
+        for (Tag tag : note.getTags()){
+           tagDAO.unreferenceNote(note, tag);
+        }
+        
+        
+        String sql = "DELETE FROM notes WHERE name = ?";
+        int rows = 0;
+        try {
+            PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            pstmnt.setString(1, note_name);
+            rows = pstmnt.executeUpdate();
             
+            
+            pstmnt.close();
         } catch (SQLException ex) {
             Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,7 +242,6 @@ public class NoteDAO{
     
     public Collection<Note> selectAll(){
         String sql = "SELECT * from notes";
-        Note note = null;
         ArrayList<Note> notes = new ArrayList<Note>();
         try {
             PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
@@ -164,17 +249,10 @@ public class NoteDAO{
             NotebookDAO notebookBean = new NotebookDAO();
             while(rs.next()){
                 int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String content = rs.getString("content");
-                int notebook_id = rs.getInt("notebook_id");
-                LocalDateTime created = rs.getTimestamp("created").toLocalDateTime();
-                LocalDateTime last_changed = rs.getTimestamp("last_changed").toLocalDateTime();
-                Notebook notebook = notebookBean.select(notebook_id);
-                TagDAO tagDAO = new TagDAO();
-                ArrayList<Tag> tags = (ArrayList<Tag>) tagDAO.selectAll(id);
+
+                notes.add(this.select(id));
                 
-                note = new Note(id, name, notebook, content, created, last_changed, tags);
-                notes.add(note);
+                pstmnt.close();
             }
             
         } catch (SQLException ex) {
@@ -183,5 +261,29 @@ public class NoteDAO{
         
         return notes;
     }
+    
+    public Collection<Note> selectAll(Notebook notebook){
+        String sql = "SELECT * from notes WHERE notebook_id = ?";
+        Note note = null;
+        ArrayList<Note> notes = new ArrayList<Note>();
+        try {
+            PreparedStatement pstmnt = this.dbUtils.getConnection().prepareStatement(sql);
+            pstmnt.setInt(1, notebook.getId());
+            ResultSet rs = pstmnt.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+
+                notes.add(this.select(id));
+            }
+            pstmnt.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(NoteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return notes;
+    }
+    
+
     
 }
